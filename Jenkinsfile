@@ -27,11 +27,6 @@ pipeline {
                             )
                         }
                     }
-                    post {
-                        always {
-                            archiveArtifacts artifacts: 'flake8.out', allowEmptyArchive: true
-                        }
-                    }
                 }
                 stage('Security Code'){
                     steps{
@@ -54,11 +49,6 @@ pipeline {
                                 ]
                             )
                             
-                        }
-                    }
-                    post {
-                        always {
-                            archiveArtifacts artifacts: 'bandit.out', allowEmptyArchive: true
                         }
                     }
                 }
