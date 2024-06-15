@@ -3,13 +3,17 @@ pipeline {
     stages {
         stage('Static Code Analysis'){
             steps{
-                sh hostname
-                sh whoami
-                sh echo %WORKSPACE%
+                sh '''
+                    hostname
+                    whoami
+                    echo %WORKSPACE%
+                '''
                 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                    sh flake8 --exit-zero --format=pylint --max-line-length=120 src > flake8.out
-                    sh bandit --exit-zero -r src -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
+                    sh '''
+                        flake8 --exit-zero --format=pylint --max-line-length=120 src > flake8.out
+                        bandit --exit-zero -r src -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
+                    '''
                     
                     recordIssues(
                         tools: [flake8(name: 'Flake8', pattern: 'flake8.out')],
