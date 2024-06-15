@@ -10,7 +10,7 @@ pipeline {
                         sh '''
                             hostname
                             whoami
-                            echo WORKSPACE
+                            pwd
                         '''
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -38,7 +38,7 @@ pipeline {
                         sh '''
                             hostname
                             whoami
-                            echo WORKSPACE
+                            pwd
                         '''
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -67,7 +67,6 @@ pipeline {
         stage('Results') {
             steps {
                 sleep(time: 5, unit: 'SECONDS')
-                junit 'result*.xml'
                 echo 'Finish'
             }
         }
