@@ -95,17 +95,10 @@ pipeline {
         stage('Extract Stack Outputs') {
             steps {
                 script {
+                    outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs')
 
-                    outputs = sh(
-                        script: "aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs'",
-                        returnStdout: true
-                    ).trim()
-
-                    extract_value(String key) {
-                        return sh(
-                            script: "echo '${outputs}' | jq -r '.[] | select(.OutputKey==\"${key}\") | .OutputValue'",
-                            returnStdout: true
-                        ).trim()
+                    extract_value() {
+                        echo "$outputs" | jq -r ".[] | select(.OutputKey==\"$1\") | .OutputValue"
                     }
 
                     env.BASE_URL_API = extract_value("BaseUrlApi")
