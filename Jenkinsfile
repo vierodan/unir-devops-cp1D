@@ -2,22 +2,31 @@ pipeline {
     agent{
         label 'agent1'
     }
+
+    environment {
+        AWS_REGION = 'us-east-1'
+        STACK_NAME = 'todo-list-aws-staging'
+        S3_BUCKET = 'aws-sam-cli-managed-default-samclisourcebucket-hwr6ts9w4rff'
+        S3_PREFIX = 'staging'
+        STAGE = 'staging'
+    }
+
     stages {
         stage('Static Analysis') {
             parallel {
                  stage('Static Code'){
                     steps{
-                        sh '''
+                        sh """
                             echo 'Host name, User and Workspace'
                             hostname
                             whoami
                             pwd
-                        '''
+                        """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            sh '''
+                            sh """
                                 flake8 --exit-zero --format=pylint --max-line-length=120 src > flake8.out
-                            '''
+                            """
                             
                             recordIssues(
                                 tools: [flake8(name: 'Flake8', pattern: 'flake8.out')],
@@ -58,44 +67,39 @@ pipeline {
         }
         stage('Deploy'){
             steps{
-                sh '''
+                sh """
                     sam build
-                '''
+                """
                 sleep(time: 1, unit: 'SECONDS')
 
-                sh '''
+                sh """
                     sam deploy \
                         --template-file template.yaml \
-                        --stack-name todo-list-aws-staging \
-                        --region us-east-1 \
+                        --stack-name ${STACK_NAME} \
+                        --region ${AWS_REGION} \
                         --capabilities CAPABILITY_IAM \
-                        --parameter-overrides Stage=staging \
+                        --parameter-overrides Stage=${STAGE} \
                         --no-fail-on-empty-changeset \
-                        --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-hwr6ts9w4rff \
-                        --s3-prefix staging \
+                        --s3-bucket ${S3_BUCKET} \
+                        --s3-prefix ${S3_PREFIX} \
                         --no-confirm-changeset
-                '''
-                 sleep(time: 1, unit: 'SECONDS')
-
-                sh '''
-                    outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs')
-
-                    my_function_arn=$(echo $outputs | jq -r '.[] | select(.OutputKey=="MyFunctionArn") | .OutputValue')
-                    my_api_endpoint=$(echo $outputs | jq -r '.[] | select(.OutputKey=="MyApiEndpoint") | .OutputValue')
-
-                    echo "Function ARN: $my_function_arn"
-                    echo "API Endpoint: $my_api_endpoint"
-
-                '''
-
+                """
+            }
+        }
+        stage('Extract Stack Outputs') {
+            steps {
+                script {
+                    sh 'chmod +x extract_outputs.sh'
+                    sh './extract_outputs.sh'
+                }
             }
         }
         stage('Results') {
             steps {
-                sh '''
+                sh """
                     junit 'result*.xml'
                     echo 'Finish'
-                '''
+                """
             }
         }
     }
