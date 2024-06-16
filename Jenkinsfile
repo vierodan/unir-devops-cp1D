@@ -97,7 +97,6 @@ pipeline {
         stage('Results') {
             steps {
                 sh """
-                    junit 'result*.xml'
                     echo 'Finish'
                 """
             }
