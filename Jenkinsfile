@@ -8,6 +8,7 @@ pipeline {
                  stage('Static Code'){
                     steps{
                         sh '''
+                            echo 'Host name, User and Workspace'
                             hostname
                             whoami
                             pwd
@@ -31,6 +32,7 @@ pipeline {
                 stage('Security Code'){
                     steps{
                         sh '''
+                            echo 'Host name, User and Workspace'
                             hostname
                             whoami
                             pwd
