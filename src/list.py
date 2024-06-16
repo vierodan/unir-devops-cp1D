@@ -11,4 +11,4 @@ def list(event, context):
         "statusCode": 200,
         "body": json.dumps(result, cls=decimalencoder.DecimalEncoder)
     }
-    return response
+    return                          response
