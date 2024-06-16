@@ -1,24 +1,25 @@
 
-# Obtener los parámetros de salida de AWS CloudFormation
+# Get outputs for AWS CloudFormation
 outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs')
 
-# Función para extraer el valor basado en la clave
+# Function for extract URL's
 extract_value() {
-    echo $outputs | jq -r ".[] | select(.OutputKey==\"$1\") | .OutputValue"
+    echo "$outputs" | jq -r ".[] | select(.OutputKey==\"$1\") | .OutputValue"
 }
 
-# Extraer los valores
-base_url_api=$(extract_value "BaseUrlApi")
-delete_todo_api=$(extract_value "DeleteTodoApi")
-list_todos_api=$(extract_value "ListTodosApi")
-update_todo_api=$(extract_value "UpdateTodoApi")
-get_todo_api=$(extract_value "GetTodoApi")
-create_todo_api=$(extract_value "CreateTodoApi")
+# Extract values and asign toenvironment variables
+export BASE_URL_API=$(extract_value "BaseUrlApi")
+export DELETE_TODO_API=$(extract_value "DeleteTodoApi")
+export LIST_TODOS_API=$(extract_value "ListTodosApi")
+export UPDATE_TODO_API=$(extract_value "UpdateTodoApi")
+export GET_TODO_API=$(extract_value "GetTodoApi")
+export CREATE_TODO_API=$(extract_value "CreateTodoApi")
 
-# Imprimir los valores
-echo "Base URL of API: $base_url_api"
-echo "Delete TODO API: $delete_todo_api"
-echo "List TODOs API: $list_todos_api"
-echo "Update TODO API: $update_todo_api"
-echo "Get TODO API: $get_todo_api"
-echo "Create TODO API: $create_todo_api"
+# Print values
+echo "Base URL of API: $BASE_URL_API"
+echo "Delete TODO API: $DELETE_TODO_API"
+echo "List TODOs API: $LIST_TODOS_API"
+echo "Update TODO API: $UPDATE_TODO_API"
+echo "Get TODO API: $GET_TODO_API"
+echo "Create TODO API: $CREATE_TODO_API"
+
