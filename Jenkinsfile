@@ -56,9 +56,46 @@ pipeline {
                 }
             }
         }
+        stage('Deploy'){
+            steps{
+                sh '''
+                    sam build
+                '''
+                sleep(time: 1, unit: 'SECONDS')
+
+                sh '''
+                    sam deploy \
+                        --template-file template.yaml \
+                        --stack-name todo-list-aws-staging \
+                        --region us-east-1 \
+                        --capabilities CAPABILITY_IAM \
+                        --parameter-overrides Stage=staging \
+                        --no-fail-on-empty-changeset \
+                        --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-hwr6ts9w4rff \
+                        --s3-prefix staging \
+                        --no-confirm-changeset
+                '''
+                 sleep(time: 1, unit: 'SECONDS')
+
+                sh '''
+                    outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs')
+
+                    my_function_arn=$(echo $outputs | jq -r '.[] | select(.OutputKey=="MyFunctionArn") | .OutputValue')
+                    my_api_endpoint=$(echo $outputs | jq -r '.[] | select(.OutputKey=="MyApiEndpoint") | .OutputValue')
+
+                    echo "Function ARN: $my_function_arn"
+                    echo "API Endpoint: $my_api_endpoint"
+
+                '''
+
+            }
+        }
         stage('Results') {
             steps {
-                echo 'Finish'
+                sh '''
+                    junit 'result*.xml'
+                    echo 'Finish'
+                '''
             }
         }
     }
