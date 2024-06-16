@@ -95,13 +95,13 @@ pipeline {
         stage('Extract Stack Outputs') {
             steps {
                 script {
-                    // Execute AWS CLI command and capture output
+
                     def outputs = sh(
                         script: "aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs'",
                         returnStdout: true
                     ).trim()
 
-                    // Define a function to extract value from JSON output
+
                     def extract_value(String key) {
                         return sh(
                             script: "echo '${outputs}' | jq -r '.[] | select(.OutputKey==\"${key}\") | .OutputValue'",
@@ -109,7 +109,7 @@ pipeline {
                         ).trim()
                     }
 
-                    // Extract and assign values to environment variables
+
                     env.BASE_URL_API = extract_value("BaseUrlApi")
                     env.DELETE_TODO_API = extract_value("DeleteTodoApi")
                     env.LIST_TODOS_API = extract_value("ListTodosApi")
@@ -118,7 +118,6 @@ pipeline {
                     env.CREATE_TODO_API = extract_value("CreateTodoApi")
                 }
 
-                // Print values (optional, for verification)
                 sh """
                     echo 'Base URL of API: \${BASE_URL_API}'
                     echo 'Delete TODO API: \${DELETE_TODO_API}'
