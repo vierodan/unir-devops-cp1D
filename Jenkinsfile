@@ -81,13 +81,13 @@ pipeline {
                 sh """
                     sam deploy \
                         --template-file template.yaml \
-                        --stack-name ${STACK_NAME} \
-                        --region ${AWS_REGION} \
+                        --stack-name ${env.STACK_NAME} \
+                        --region ${env.AWS_REGION} \
                         --capabilities CAPABILITY_IAM \
-                        --parameter-overrides Stage=${STAGE} \
+                        --parameter-overrides Stage=${env.STAGE} \
                         --no-fail-on-empty-changeset \
-                        --s3-bucket ${S3_BUCKET} \
-                        --s3-prefix ${S3_PREFIX} \
+                        --s3-bucket ${env.S3_BUCKET} \
+                        --s3-prefix ${env.S3_PREFIX} \
                         --no-confirm-changeset
                 """
             }
@@ -100,12 +100,12 @@ pipeline {
                 }
 
                 sh """
-                    echo 'Base URL of API: \${BASE_URL_API}'
-                    echo 'Delete TODO API: \${DELETE_TODO_API}'
-                    echo 'List TODOs API: \${LIST_TODOS_API}'
-                    echo 'Update TODO API: \${UPDATE_TODO_API}'
-                    echo 'Get TODO API: \${GET_TODO_API}'
-                    echo 'Create TODO API: \${CREATE_TODO_API}'
+                    echo 'Base URL of API: ${env.BASE_URL_API}'
+                    echo 'Delete TODO API: ${env.DELETE_TODO_API}'
+                    echo 'List TODOs API: ${env.LIST_TODOS_API}'
+                    echo 'Update TODO API: ${env.UPDATE_TODO_API}'
+                    echo 'Get TODO API: ${env.GET_TODO_API}'
+                    echo 'Create TODO API: ${env.CREATE_TODO_API}'
                 """
             }
         }
