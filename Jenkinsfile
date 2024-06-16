@@ -96,19 +96,17 @@ pipeline {
             steps {
                 script {
 
-                    def outputs = sh(
+                    outputs = sh(
                         script: "aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs'",
                         returnStdout: true
                     ).trim()
 
-
-                    def extract_value(String key) {
+                    extract_value(String key) {
                         return sh(
                             script: "echo '${outputs}' | jq -r '.[] | select(.OutputKey==\"${key}\") | .OutputValue'",
                             returnStdout: true
                         ).trim()
                     }
-
 
                     env.BASE_URL_API = extract_value("BaseUrlApi")
                     env.DELETE_TODO_API = extract_value("DeleteTodoApi")
