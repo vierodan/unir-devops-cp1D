@@ -92,6 +92,15 @@ pipeline {
                     sh 'chmod +x extract_outputs.sh'
                     sh './extract_outputs.sh'
                 }
+
+                sh """
+                    echo 'Base URL of API: $BASE_URL_API'
+                    echo 'Delete TODO API: $DELETE_TODO_API'
+                    echo 'List TODOs API: $LIST_TODOS_API'
+                    echo 'Update TODO API: $UPDATE_TODO_API'
+                    echo 'Get TODO API: $GET_TODO_API'
+                    echo 'Create TODO API: $CREATE_TODO_API'
+                """
             }
         }
         stage('Results') {

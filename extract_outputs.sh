@@ -14,12 +14,3 @@ export LIST_TODOS_API=$(extract_value "ListTodosApi")
 export UPDATE_TODO_API=$(extract_value "UpdateTodoApi")
 export GET_TODO_API=$(extract_value "GetTodoApi")
 export CREATE_TODO_API=$(extract_value "CreateTodoApi")
-
-# Print values
-echo "Base URL of API: $BASE_URL_API"
-echo "Delete TODO API: $DELETE_TODO_API"
-echo "List TODOs API: $LIST_TODOS_API"
-echo "Update TODO API: $UPDATE_TODO_API"
-echo "Get TODO API: $GET_TODO_API"
-echo "Create TODO API: $CREATE_TODO_API"
-
