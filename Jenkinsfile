@@ -9,6 +9,12 @@ pipeline {
         S3_BUCKET = 'aws-sam-cli-managed-default-samclisourcebucket-hwr6ts9w4rff'
         S3_PREFIX = 'staging'
         STAGE = 'staging'
+        BASE_URL_API = ''
+        DELETE_TODO_API = ''
+        LIST_TODOS_API = ''
+        UPDATE_TODO_API = ''
+        GET_TODO_API = ''
+        CREATE_TODO_API = ''
     }
 
     stages {
