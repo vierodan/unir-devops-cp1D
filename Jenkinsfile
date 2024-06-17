@@ -3,6 +3,7 @@ pipeline {
         label 'agent1'
     }
 
+    //
     environment {
         AWS_REGION = 'us-east-1'
         STACK_NAME = 'todo-list-aws-staging'
@@ -67,11 +68,13 @@ pipeline {
         }
         stage('Deploy'){
             steps{
+                //sam build command
                 sh """
                     sam build
                 """
                 sleep(time: 1, unit: 'SECONDS')
 
+                //sam deploy command
                 sh """
                     sam deploy \
                         --template-file template.yaml \
@@ -87,6 +90,7 @@ pipeline {
             }
         }
         stage('Extract Stack Outputs') {
+            //env variables for output endpoint from sam deploy command
             environment {
                 BASE_URL_API = 'init'
                 DELETE_TODO_API = 'init'
@@ -97,10 +101,16 @@ pipeline {
             }
             steps {
                 script {
+                    //asign permissions to extract_output.sh script
                     sh 'chmod +x extract_outputs.sh'
+
+                    //execute extract_output.sh script for extract outputs url's from sam deploy command
                     sh './extract_outputs.sh'
+
+                    //list temporal files created with url's for all endpoint
                     sh 'ls -l *.tmp'
 
+                    //read temporal files and asing the value to environment variable
                     env.BASE_URL_API = readFile('base_url_api.tmp').trim()
                     env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim()
                     env.LIST_TODOS_API = readFile('list_todos_api.tmp').trim()
@@ -108,6 +118,7 @@ pipeline {
                     env.GET_TODO_API = readFile('get_todo_api.tmp').trim()
                     env.CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
 
+                    //clean temporal files
                     sh 'rm *.tmp'
                 }
             }
