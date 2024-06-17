@@ -105,14 +105,21 @@ pipeline {
 
                         BASE_URL_API=$(extract_value "BaseUrlApi")
 
-                        echo $BASE_URL_API
-                    ''', returnStdout: true).trim()
+                        # Guardar el valor de BASE_URL_API en un archivo temporal
+                        echo $BASE_URL_API > base_url_api.txt
+                    ''', returnStatus: true)
 
-                    env.BASE_URL_API = output
+                    if (output != 0) {
+                        error("Script failed")
+                    }
+
+                    // Leer el valor del archivo temporal y asignarlo a la variable de entorno del pipeline
+                    env.BASE_URL_API = readFile('base_url_api.txt').trim()
                 }
 
                 echo "El valor de BASE_URL_API es: ${env.BASE_URL_API}"
             }
+        }
         }
         stage('Results') {
             steps {
