@@ -104,6 +104,14 @@ pipeline {
         stage('Asign env variables') {
             steps {
                 script {
+                    sh 'chmod +x base_url_api.tmp'
+                    sh 'chmod +x delete_todo_api.tmp'
+                    sh 'chmod +x list_todos_api.tmp'
+                    sh 'chmod +x update_todo_api.tmp'
+                    sh 'chmod +x get_todo_api.tmp'
+                    sh 'chmod +x create_todo_api.tmp'
+
+
                     try {
                         env.BASE_URL_API = readFile('base_url_api.tmp').trim()
                         env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim()
