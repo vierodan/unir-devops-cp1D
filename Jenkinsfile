@@ -95,21 +95,23 @@ pipeline {
         stage('Extract Stack Outputs') {
             steps {
                 script {
+                    def output = sh(script: '''
+                        #!/bin/bash
+                        outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs')
 
-                    sh 'chmod +x extract_outputs.sh'
-                
-                    def output = sh(script: './extract_outputs.sh', returnStdout: true).trim()
-                    
-                    def envVars = output.split('\n')
-                    envVars.each { envVar ->
-                        def parts = envVar.replace('export ', '').split('=')
-                        def key = parts[0].trim()
-                        def value = parts[1].trim()
-                        env."${key}" = value
-                    }
+                        extract_value() {
+                            echo "$outputs" | jq -r ".[] | select(.OutputKey==\\"$1\\") | .OutputValue"
+                        }
+
+                        BASE_URL_API=$(extract_value "BaseUrlApi")
+
+                        echo $BASE_URL_API
+                    ''', returnStdout: true).trim()
+
+                    env.BASE_URL_API = output
                 }
 
-                echo "BASE_URL_API = ${env.BASE_URL_API}"
+                echo "El valor de BASE_URL_API es: ${env.BASE_URL_API}"
             }
         }
         stage('Results') {
