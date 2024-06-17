@@ -106,11 +106,10 @@ pipeline {
                     env.BASE_URL_API = readFile('base_url_api.tmp').trim()
                     env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim();
                 }
+
+                echo "Value for --> BASE_URL_API es: ${env.BASE_URL_API}"
+                echo "Value for --> DELETE_TODO_API es: ${env.DELETE_TODO_API}"
             }
-
-            echo "Value for --> BASE_URL_API es: ${env.BASE_URL_API}"
-            echo "Value for --> DELETE_TODO_API es: ${env.DELETE_TODO_API}"
-
         }
         stage('Results') {
             steps {
