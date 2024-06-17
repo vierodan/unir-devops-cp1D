@@ -9,12 +9,12 @@ pipeline {
         S3_BUCKET = 'aws-sam-cli-managed-default-samclisourcebucket-hwr6ts9w4rff'
         S3_PREFIX = 'staging'
         STAGE = 'staging'
-        BASE_URL_API = ''
-        DELETE_TODO_API = ''
-        LIST_TODOS_API = ''
-        UPDATE_TODO_API = ''
-        GET_TODO_API = ''
-        CREATE_TODO_API = ''
+        BASE_URL_API = 'init'
+        DELETE_TODO_API = 'init'
+        LIST_TODOS_API = 'init'
+        UPDATE_TODO_API = 'init'
+        GET_TODO_API = 'init'
+        CREATE_TODO_API = 'init'
     }
 
     stages {
@@ -97,6 +97,8 @@ pipeline {
                 script {
                     sh 'chmod +x extract_outputs.sh'
                     sh './extract_outputs.sh'
+                    sh 'ls -l *.tmp'
+
 
                     def baseUrlApi = readFile('base_url_api.tmp').trim()
                     env.BASE_URL_API = baseUrlApi

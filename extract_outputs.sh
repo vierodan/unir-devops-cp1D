@@ -14,7 +14,7 @@ CREATE_TODO_API=$(extract_value "CreateTodoApi")
 
 echo $BASE_URL_API > base_url_api.tmp
 echo $DELETE_TODO_API > delete_todo_api.tmp
-echo $LIST_TODOS_API > list_todos_api.temp
+echo $LIST_TODOS_API > list_todos_api.tmp
 echo $UPDATE_TODO_API > update_todo_api.tmp
 echo $GET_TODO_API > get_todo_api.tmp
 echo $CREATE_TODO_API >create_todo_api.tmp
