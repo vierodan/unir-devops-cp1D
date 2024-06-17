@@ -118,8 +118,8 @@ pipeline {
                 }
 
                 echo "El valor de BASE_URL_API es: ${env.BASE_URL_API}"
+            
             }
-        }
         }
         stage('Results') {
             steps {
