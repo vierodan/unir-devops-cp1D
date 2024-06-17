@@ -97,14 +97,14 @@ pipeline {
                 script {
                     sh 'chmod +x extract_outputs.sh'
                     sh './extract_outputs.sh'
-                }
-            }
-        }
-        stage('Asign env variables'){
-            steps{
-                script{
-                    env.BASE_URL_API = readFile('base_url_api.tmp').trim()
-                    env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim();
+
+                    def baseUrlApi = readFile('base_url_api.tmp').trim()
+                    env.BASE_URL_API = baseUrlApi
+
+                    def deleteTodoApi = readFile('delete_todo_api.tmp').trim()
+                    env.DELETE_TODO_API = deleteTodoApi
+
+
                 }
 
                 echo "Value for --> BASE_URL_API es: ${env.BASE_URL_API}"
