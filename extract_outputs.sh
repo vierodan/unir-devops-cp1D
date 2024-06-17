@@ -5,9 +5,20 @@ extract_value() {
     echo "$outputs" | jq -r ".[] | select(.OutputKey==\"$1\") | .OutputValue"
 }
 
-export BASE_URL_API=$(extract_value "BaseUrlApi")
-export DELETE_TODO_API=$(extract_value "DeleteTodoApi")
-export LIST_TODOS_API=$(extract_value "ListTodosApi")
-export UPDATE_TODO_API=$(extract_value "UpdateTodoApi")
-export GET_TODO_API=$(extract_value "GetTodoApi")
-export CREATE_TODO_API=$(extract_value "CreateTodoApi")
+BASE_URL_API=$(extract_value "BaseUrlApi")
+DELETE_TODO_API=$(extract_value "DeleteTodoApi")
+LIST_TODOS_API=$(extract_value "ListTodosApi")
+UPDATE_TODO_API=$(extract_value "UpdateTodoApi")
+GET_TODO_API=$(extract_value "GetTodoApi")
+CREATE_TODO_API=$(extract_value "CreateTodoApi")
+
+# Guardar las variables en un archivo de propiedades
+cat <<EOF > env.properties
+BASE_URL_API=$BASE_URL_API
+DELETE_TODO_API=$DELETE_TODO_API
+LIST_TODOS_API=$LIST_TODOS_API
+UPDATE_TODO_API=$UPDATE_TODO_API
+GET_TODO_API=$GET_TODO_API
+CREATE_TODO_API=$CREATE_TODO_API
+EOF
+

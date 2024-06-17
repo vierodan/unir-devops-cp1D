@@ -95,18 +95,45 @@ pipeline {
         stage('Extract Stack Outputs') {
             steps {
                 script {
-                    sh 'chmod +x extract_outputs.sh'
-                    sh './extract_outputs.sh'
-                }
 
-                sh """
-                    echo 'Base URL of API: ${env.BASE_URL_API}'
-                    echo 'Delete TODO API: ${env.DELETE_TODO_API}'
-                    echo 'List TODOs API: ${env.LIST_TODOS_API}'
-                    echo 'Update TODO API: ${env.UPDATE_TODO_API}'
-                    echo 'Get TODO API: ${env.GET_TODO_API}'
-                    echo 'Create TODO API: ${env.CREATE_TODO_API}'
-                """
+                    output = sh(script: '''#!/bin/bash
+                        outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs')
+
+                        extract_value() {
+                            echo "$outputs" | jq -r ".[] | select(.OutputKey==\\"$1\\") | .OutputValue"
+                        }
+
+                        BASE_URL_API=$(extract_value "BaseUrlApi")
+                        DELETE_TODO_API=$(extract_value "DeleteTodoApi")
+                        LIST_TODOS_API=$(extract_value "ListTodosApi")
+                        UPDATE_TODO_API=$(extract_value "UpdateTodoApi")
+                        GET_TODO_API=$(extract_value "GetTodoApi")
+                        CREATE_TODO_API=$(extract_value "CreateTodoApi")
+
+                        cat <<EOF
+                        export BASE_URL_API=$BASE_URL_API
+                        export DELETE_TODO_API=$DELETE_TODO_API
+                        export LIST_TODOS_API=$LIST_TODOS_API
+                        export UPDATE_TODO_API=$UPDATE_TODO_API
+                        export GET_TODO_API=$GET_TODO_API
+                        export CREATE_TODO_API=$CREATE_TODO_API
+                        EOF
+                        ''', returnStdout: true).trim()
+                    
+
+                    envVars = output.split('\n')
+                    envVars.each { envVar ->
+                        def (key, value) = envVar.replace('export ', '').split('=')
+                        env[key] = value
+                    }
+                    
+                    echo "BASE_URL_API: ${env.BASE_URL_API}"
+                    echo "DELETE_TODO_API: ${env.DELETE_TODO_API}"
+                    echo "LIST_TODOS_API: ${env.LIST_TODOS_API}"
+                    echo "UPDATE_TODO_API: ${env.UPDATE_TODO_API}"
+                    echo "GET_TODO_API: ${env.GET_TODO_API}"
+                    echo "CREATE_TODO_API: ${env.CREATE_TODO_API}"
+                }
             }
         }
         stage('Results') {
