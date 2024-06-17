@@ -95,31 +95,22 @@ pipeline {
         stage('Extract Stack Outputs') {
             steps {
                 script {
-                    def output = sh(script: '''
-                        #!/bin/bash
-                        outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs')
-
-                        extract_value() {
-                            echo "$outputs" | jq -r ".[] | select(.OutputKey==\\"$1\\") | .OutputValue"
-                        }
-
-                        BASE_URL_API=$(extract_value "BaseUrlApi")
-
-                        # Guardar el valor de BASE_URL_API en un archivo temporal
-                        echo $BASE_URL_API > base_url_api.txt
-                    ''', returnStatus: true)
-
-                    if (output != 0) {
-                        error("Script failed")
-                    }
-
-                    // Leer el valor del archivo temporal y asignarlo a la variable de entorno del pipeline
-                    env.BASE_URL_API = readFile('base_url_api.txt').trim()
+                    sh 'chmod +x extract_outputs.sh'
+                    sh './extract_outputs.sh'
                 }
-
-                echo "El valor de BASE_URL_API es: ${env.BASE_URL_API}"
-            
             }
+        }
+        stage('Asign env variables'){
+            steps{
+                script{
+                    env.BASE_URL_API = readFile('base_url_api.tmp').trim()
+                    env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim();
+                }
+            }
+
+            echo "Value for --> BASE_URL_API es: ${env.BASE_URL_API}"
+            echo "Value for --> DELETE_TODO_API es: ${env.DELETE_TODO_API}"
+
         }
         stage('Results') {
             steps {

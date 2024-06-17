@@ -12,11 +12,9 @@ UPDATE_TODO_API=$(extract_value "UpdateTodoApi")
 GET_TODO_API=$(extract_value "GetTodoApi")
 CREATE_TODO_API=$(extract_value "CreateTodoApi")
 
-cat <<EOF
-export BASE_URL_API=$BASE_URL_API
-export DELETE_TODO_API=$DELETE_TODO_API
-export LIST_TODOS_API=$LIST_TODOS_API
-export UPDATE_TODO_API=$UPDATE_TODO_API
-export GET_TODO_API=$GET_TODO_API
-export CREATE_TODO_API=$CREATE_TODO_API
-EOF
+echo $BASE_URL_API > base_url_api.tmp
+echo $DELETE_TODO_API > delete_todo_api.tmp
+echo $LIST_TODOS_API > list_todos_api.temp
+echo $UPDATE_TODO_API > update_todo_api.tmp
+echo $GET_TODO_API > get_todo_api.tmp
+echo $CREATE_TODO_API >create_todo_api.tmp
