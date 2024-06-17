@@ -118,6 +118,11 @@ pipeline {
                     }
                 }
 
+
+            }
+        }
+        stage('tes variables'){
+            steps{
                 echo "Value for --> BASE_URL_API es: ${env.BASE_URL_API}"
                 echo "Value for --> DELETE_TODO_API es: ${env.DELETE_TODO_API}"
             }
