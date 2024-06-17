@@ -98,9 +98,9 @@ pipeline {
 
                     sh 'chmod +x extract_outputs.sh'
                 
-                    def output = sh(script: './extract_outputs.sh', returnStdout: true).trim()
+                    output = sh(script: './extract_outputs.sh', returnStdout: true).trim()
                     
-                    def envVars = output.split('\n')
+                    envVars = output.split('\n')
                     envVars.each { envVar ->
                         def (key, value) = envVar.replace('export ', '').split('=')
                         env[key] = value
