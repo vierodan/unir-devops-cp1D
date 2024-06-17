@@ -96,6 +96,14 @@ pipeline {
             }
         }
         stage('Asign env variables') {
+            environment {
+                BASE_URL_API = 'init'
+                DELETE_TODO_API = 'init'
+                LIST_TODOS_API = 'init'
+                UPDATE_TODO_API = 'init'
+                GET_TODO_API = 'init'
+                CREATE_TODO_API = 'init'
+            }
             steps {
                 script {
                     sh 'chmod +x base_url_api.tmp'
@@ -111,15 +119,6 @@ pipeline {
                     env.UPDATE_TODO_API = readFile('update_todo_api.tmp').trim()
                     env.GET_TODO_API = readFile('get_todo_api.tmp').trim()
                     env.CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
-                }
-
-                environment {
-                    BASE_URL_API = 'init'
-                    DELETE_TODO_API = 'init'
-                    LIST_TODOS_API = 'init'
-                    UPDATE_TODO_API = 'init'
-                    GET_TODO_API = 'init'
-                    CREATE_TODO_API = 'init'
                 }
             }
         }
