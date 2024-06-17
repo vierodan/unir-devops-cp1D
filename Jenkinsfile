@@ -98,20 +98,27 @@ pipeline {
                     sh 'chmod +x extract_outputs.sh'
                     sh './extract_outputs.sh'
                     sh 'ls -l *.tmp'
-
-
-                    def baseUrlApi = readFile('base_url_api.tmp').trim()
-                    BASE_URL_API = baseUrlApi
-
-                    def deleteTodoApi = readFile('delete_todo_api.tmp').trim()
-                    DELETE_TODO_API = deleteTodoApi
-
-
+                }
+            }
+        }
+        stage('Asign env variables') {
+            steps {
+                script {
+                    try {
+                        env.BASE_URL_API = readFile('base_url_api.tmp').trim()
+                        env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim()
+                        env.LIST_TODOS_API = readFile('list_todos_api.tmp').trim()
+                        env.UPDATE_TODO_API = readFile('update_todo_api.tmp').trim()
+                        env.GET_TODO_API = readFile('get_todo_api.tmp').trim()
+                        env.CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
+                    } catch (Exception e) {
+                        echo "Error when asign environment variables: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        error "Unable asign environment variables"
+                    }
                 }
 
                 echo "Value for --> BASE_URL_API es: ${env.BASE_URL_API}"
-
-
                 echo "Value for --> DELETE_TODO_API es: ${env.DELETE_TODO_API}"
             }
         }
