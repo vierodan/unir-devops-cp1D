@@ -125,12 +125,12 @@ pipeline {
         }
         stage('test variables'){
             steps{
-                echo "Value for --> BASE_URL_API es: ${env.BASE_URL_API}"
-                echo "Value for --> DELETE_TODO_API es: ${env.DELETE_TODO_API}"
-                echo "Value for --> LIST_TODOS_API es: ${env.LIST_TODOS_API}"
-                echo "Value for --> UPDATE_TODO_API es: ${env.UPDATE_TODO_API}"
-                echo "Value for --> GET_TODO_API es: ${env.GET_TODO_API}"
-                echo "Value for --> CREATE_TODO_API es: ${env.CREATE_TODO_API}"
+                echo "Value for --> BASE_URL_API: ${env.BASE_URL_API}"
+                echo "Value for --> DELETE_TODO_API: ${env.DELETE_TODO_API}"
+                echo "Value for --> LIST_TODOS_API: ${env.LIST_TODOS_API}"
+                echo "Value for --> UPDATE_TODO_API: ${env.UPDATE_TODO_API}"
+                echo "Value for --> GET_TODO_API: ${env.GET_TODO_API}"
+                echo "Value for --> CREATE_TODO_API: ${env.CREATE_TODO_API}"
             }
         }
         stage('Results') {
