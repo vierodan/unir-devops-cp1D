@@ -101,15 +101,17 @@ pipeline {
 
 
                     def baseUrlApi = readFile('base_url_api.tmp').trim()
-                    env.BASE_URL_API = baseUrlApi
+                    BASE_URL_API = baseUrlApi
 
                     def deleteTodoApi = readFile('delete_todo_api.tmp').trim()
-                    env.DELETE_TODO_API = deleteTodoApi
+                    DELETE_TODO_API = deleteTodoApi
 
 
                 }
 
                 echo "Value for --> BASE_URL_API es: ${env.BASE_URL_API}"
+
+
                 echo "Value for --> DELETE_TODO_API es: ${env.DELETE_TODO_API}"
             }
         }
