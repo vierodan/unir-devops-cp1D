@@ -94,6 +94,16 @@ pipeline {
         }
         stage('Extract Stack Outputs') {
             steps {
+
+                sh """
+                    echo "BASE_URL_API: ${env.BASE_URL_API}"
+                    echo "DELETE_TODO_API: ${env.DELETE_TODO_API}"
+                    echo "LIST_TODOS_API: ${env.LIST_TODOS_API}"
+                    echo "UPDATE_TODO_API: ${env.UPDATE_TODO_API}"
+                    echo "GET_TODO_API: ${env.GET_TODO_API}"
+                    echo "CREATE_TODO_API: ${env.CREATE_TODO_API}"
+                """
+
                 script {
 
                     sh 'chmod +x extract_outputs.sh'
@@ -107,14 +117,16 @@ pipeline {
                         def value = parts[1].trim()
                         env."${key}" = value
                     }
+                }
 
+                sh """
                     echo "BASE_URL_API: ${env.BASE_URL_API}"
                     echo "DELETE_TODO_API: ${env.DELETE_TODO_API}"
                     echo "LIST_TODOS_API: ${env.LIST_TODOS_API}"
                     echo "UPDATE_TODO_API: ${env.UPDATE_TODO_API}"
                     echo "GET_TODO_API: ${env.GET_TODO_API}"
                     echo "CREATE_TODO_API: ${env.CREATE_TODO_API}"
-                }
+                """
             }
         }
         stage('Results') {
