@@ -98,12 +98,14 @@ pipeline {
 
                     sh 'chmod +x extract_outputs.sh'
                 
-                    output = sh(script: './extract_outputs.sh', returnStdout: true).trim()
+                    def output = sh(script: './extract_outputs.sh', returnStdout: true).trim()
                     
-                    envVars = output.split('\n')
+                    def envVars = output.split('\n')
                     envVars.each { envVar ->
-                        def (key, value) = envVar.replace('export ', '').split('=')
-                        env[key] = value
+                        def parts = envVar.replace('export ', '').split('=')
+                        def key = parts[0].trim()
+                        def value = parts[1].trim()
+                        env."${key}" = value
                     }
 
                     echo "BASE_URL_API: ${env.BASE_URL_API}"
