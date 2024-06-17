@@ -96,32 +96,11 @@ pipeline {
             steps {
                 script {
 
-                    output = sh(script: '''
-                        outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs')
-
-                        extract_value() {
-                            echo "$outputs" | jq -r ".[] | select(.OutputKey==\\"$1\\") | .OutputValue"
-                        }
-
-                        BASE_URL_API=$(extract_value "BaseUrlApi")
-                        DELETE_TODO_API=$(extract_value "DeleteTodoApi")
-                        LIST_TODOS_API=$(extract_value "ListTodosApi")
-                        UPDATE_TODO_API=$(extract_value "UpdateTodoApi")
-                        GET_TODO_API=$(extract_value "GetTodoApi")
-                        CREATE_TODO_API=$(extract_value "CreateTodoApi")
-
-                        cat <<EOF
-export BASE_URL_API=$BASE_URL_API
-export DELETE_TODO_API=$DELETE_TODO_API
-export LIST_TODOS_API=$LIST_TODOS_API
-export UPDATE_TODO_API=$UPDATE_TODO_API
-export GET_TODO_API=$GET_TODO_API
-export CREATE_TODO_API=$CREATE_TODO_API
-EOF
-                        ''', returnStdout: true).trim()
+                    sh 'chmod +x extract_outputs.sh'
+                
+                    def output = sh(script: './extract_outputs.sh', returnStdout: true).trim()
                     
-
-                    envVars = output.split('\n')
+                    def envVars = output.split('\n')
                     envVars.each { envVar ->
                         def (key, value) = envVar.replace('export ', '').split('=')
                         env[key] = value
