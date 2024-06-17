@@ -111,22 +111,22 @@ pipeline {
                     sh 'chmod +x get_todo_api.tmp'
                     sh 'chmod +x create_todo_api.tmp'
 
-
-                    try {
-                        env.BASE_URL_API = readFile('base_url_api.tmp').trim()
-                        env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim()
-                        env.LIST_TODOS_API = readFile('list_todos_api.tmp').trim()
-                        env.UPDATE_TODO_API = readFile('update_todo_api.tmp').trim()
-                        env.GET_TODO_API = readFile('get_todo_api.tmp').trim()
-                        env.CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
-                    } catch (Exception e) {
-                        echo "Error when asign environment variables: ${e.message}"
-                        currentBuild.result = 'FAILURE'
-                        error "Unable asign environment variables"
-                    }
+                    env.BASE_URL_API = readFile('base_url_api.tmp').trim()
+                    env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim()
+                    env.LIST_TODOS_API = readFile('list_todos_api.tmp').trim()
+                    env.UPDATE_TODO_API = readFile('update_todo_api.tmp').trim()
+                    env.GET_TODO_API = readFile('get_todo_api.tmp').trim()
+                    env.CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
                 }
 
-
+                environment {
+                    BASE_URL_API = 'init'
+                    DELETE_TODO_API = 'init'
+                    LIST_TODOS_API = 'init'
+                    UPDATE_TODO_API = 'init'
+                    GET_TODO_API = 'init'
+                    CREATE_TODO_API = 'init'
+                }
             }
         }
         stage('tes variables'){
