@@ -87,15 +87,6 @@ pipeline {
             }
         }
         stage('Extract Stack Outputs') {
-            steps {
-                script {
-                    sh 'chmod +x extract_outputs.sh'
-                    sh './extract_outputs.sh'
-                    sh 'ls -l *.tmp'
-                }
-            }
-        }
-        stage('Asign env variables') {
             environment {
                 BASE_URL_API = 'init'
                 DELETE_TODO_API = 'init'
@@ -106,12 +97,9 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'chmod +x base_url_api.tmp'
-                    sh 'chmod +x delete_todo_api.tmp'
-                    sh 'chmod +x list_todos_api.tmp'
-                    sh 'chmod +x update_todo_api.tmp'
-                    sh 'chmod +x get_todo_api.tmp'
-                    sh 'chmod +x create_todo_api.tmp'
+                    sh 'chmod +x extract_outputs.sh'
+                    sh './extract_outputs.sh'
+                    sh 'ls -l *.tmp'
 
                     env.BASE_URL_API = readFile('base_url_api.tmp').trim()
                     env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim()
@@ -119,13 +107,19 @@ pipeline {
                     env.UPDATE_TODO_API = readFile('update_todo_api.tmp').trim()
                     env.GET_TODO_API = readFile('get_todo_api.tmp').trim()
                     env.CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
+
+                    sh 'rm *.tmp'
                 }
             }
         }
-        stage('tes variables'){
+        stage('test variables'){
             steps{
                 echo "Value for --> BASE_URL_API es: ${env.BASE_URL_API}"
                 echo "Value for --> DELETE_TODO_API es: ${env.DELETE_TODO_API}"
+                echo "Value for --> LIST_TODOS_API es: ${env.LIST_TODOS_API}"
+                echo "Value for --> UPDATE_TODO_API es: ${env.UPDATE_TODO_API}"
+                echo "Value for --> GET_TODO_API es: ${env.GET_TODO_API}"
+                echo "Value for --> CREATE_TODO_API es: ${env.CREATE_TODO_API}"
             }
         }
         stage('Results') {
