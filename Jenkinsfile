@@ -130,7 +130,7 @@ pipeline {
                     }
 
                     executeCutTmpFile(readFile('delete_todo_api.tmp').trim(), 4)
-                    env.ENDPOINT_DELETE_TODO_API = RESULT_CUT_TMP_FILE
+                    env.ENDPOINT_DELETE_TODO_API = $RESULT_CUT_TMP_FILE
 
                     sleep time: 3, unit: 'SECONDS'
 
