@@ -109,10 +109,10 @@ pipeline {
 
                 script {
                     //asign permissions to execut scripts
-                    sh "chmod +x extract_outputs.sh"
+                    sh "chmod +x get_base_url_api.sh"
 
                     //execute extract_output.sh script for extract outputs url's from sam deploy command
-                    sh "./extract_outputs.sh ${env.STAGE} ${env.AWS_REGION}"
+                    sh "./get_base_url_api.sh ${env.STAGE} ${env.AWS_REGION}"
 
                     //list temporal files created with url's for all endpoint
                     sh "ls -l *.tmp"

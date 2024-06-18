@@ -8,8 +8,8 @@ fi
 stage=$1
 region=$2
 
-echo "extract_outputs.sh --> Input 1 'stage' value: $stage"
-echo "extract_outputs.sh --> Input 2 'region' value: $region"
+echo "get_base_url_api.sh --> Input 1 'stage' value: $stage"
+echo "get_base_url_api.sh --> Input 2 'region' value: $region"
 
 
 outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-$stage --region $region | jq '.Stacks[0].Outputs')
