@@ -25,9 +25,11 @@ pipeline {
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            sh """
-                                flake8 --exit-zero --format=pylint --max-line-length=120 src > flake8.out
-                            """
+                            sh "flake8 \
+                                    --exit-zero \
+                                    --format=pylint \
+                                    --max-line-length=120 \
+                                    src > flake8.out"
                             
                             recordIssues(
                                 tools: [flake8(name: 'Flake8', pattern: 'flake8.out')],
@@ -41,17 +43,21 @@ pipeline {
                 }
                 stage('Security Code'){
                     steps{
-                        sh '''
+                        sh """
                             echo 'Host name, User and Workspace'
                             hostname
                             whoami
                             pwd
-                        '''
+                        """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            sh '''
-                                bandit --exit-zero -r src -f custom -o bandit.out --severity-level medium --msg-template "{abspath}:{line}: [{test_id}] {msg}"
-                            '''
+                            sh "bandit \
+                                --exit-zero \
+                                -r src \
+                                -f custom \
+                                -o bandit.out \
+                                --severity-level medium \
+                                --msg-template "{abspath}:{line}: [{test_id}] {msg}""
                             
                             recordIssues( 
                                 tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')], 
@@ -69,14 +75,12 @@ pipeline {
         stage('Deploy'){
             steps{
                 //sam build command
-                sh """
-                    sam build
-                """
+                sh "sam build"
+
                 sleep(time: 1, unit: 'SECONDS')
 
                 //sam deploy command
-                sh """
-                    sam deploy \
+                sh "sam deploy \
                         --template-file template.yaml \
                         --stack-name ${env.STACK_NAME} \
                         --region ${env.AWS_REGION} \
@@ -85,8 +89,7 @@ pipeline {
                         --no-fail-on-empty-changeset \
                         --s3-bucket ${env.S3_BUCKET} \
                         --s3-prefix ${env.S3_PREFIX} \
-                        --no-confirm-changeset
-                """
+                        --no-confirm-changeset"
             }
         }
         stage('Extract Stack Outputs') {
@@ -102,13 +105,13 @@ pipeline {
             steps {
                 script {
                     //asign permissions to extract_output.sh script
-                    sh 'chmod +x extract_outputs.sh'
+                    sh "chmod +x extract_outputs.sh"
 
                     //execute extract_output.sh script for extract outputs url's from sam deploy command
-                    sh './extract_outputs.sh'
+                    sh "./extract_outputs.sh ${env.STAGE} ${env.AWS_REGION}"
 
                     //list temporal files created with url's for all endpoint
-                    sh 'ls -l *.tmp'
+                    sh "ls -l *.tmp"
 
                     //read temporal files and asing the value to environment variable
                     env.BASE_URL_API = readFile('base_url_api.tmp').trim()
@@ -119,7 +122,7 @@ pipeline {
                     env.CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
 
                     //clean temporal files
-                    sh 'rm *.tmp'
+                    sh "rm *.tmp"
                 }
             }
         }

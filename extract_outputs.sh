@@ -1,5 +1,11 @@
+input_environment = $1
+input_region = $2
 
-outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-staging --region us-east-1 | jq '.Stacks[0].Outputs')
+echo "Input 1: $input_environment"
+echo "Input 2: $input_region"
+
+
+outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-$input_environment --region $input_region | jq '.Stacks[0].Outputs')
 
 extract_value() {
     echo "$outputs" | jq -r ".[] | select(.OutputKey==\"$1\") | .OutputValue"
