@@ -21,7 +21,7 @@ pipeline {
                             echo 'Host name, User and Workspace'
                             hostname
                             whoami
-                            ${WORKSPACE}
+                            pwd
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -47,7 +47,7 @@ pipeline {
                             echo 'Host name, User and Workspace'
                             hostname
                             whoami
-                            ${WORKSPACE}
+                            pwd
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -147,11 +147,10 @@ pipeline {
                     echo 'Host name, User and Workspace'
                     hostname
                     whoami
-                    ${WORKSPACE}
+                    pwd
                 """
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') 
                     sh """
-                        set PYTHONPATH=${WORKSPACE}
                         export BASE_URL=${env.ENDPOINT_BASE_URL_API}
                         pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
                     """
