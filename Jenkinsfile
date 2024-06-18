@@ -51,8 +51,7 @@ pipeline {
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            sh "
-                                bandit \
+                            sh "bandit \
                                     --exit-zero \
                                     -r src \
                                     -f custom \
