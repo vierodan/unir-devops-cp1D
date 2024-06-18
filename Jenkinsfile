@@ -110,7 +110,7 @@ pipeline {
                 script {
                     //asign permissions to execut scripts
                     sh "chmod +x extract_outputs.sh"
-                    sh "chmod +x read_tmp_file.sh"
+                    sh "chmod +x cut_tmp_file.sh"
 
                     //execute extract_output.sh script for extract outputs url's from sam deploy command
                     sh "./extract_outputs.sh ${env.STAGE} ${env.AWS_REGION}"
@@ -120,16 +120,16 @@ pipeline {
 
                     sleep time: 3, unit: 'SECONDS'
 
-                    def executeReadTmpFile = { file, cut ->
+                    def executeCutTmpFile = { content, cut ->
                         def result = sh(
-                            script: "./read_tmp_file.sh ${file} ${cut}",
+                            script: "./cut_tmp_file.sh ${content} ${cut}",
                             returnStdout: true
                         ).trim()
                         
                         return result
                     }
 
-                    def result = executeReadTmpFile(delete_todo_api.tmp, 4)
+                    def result = executeCutTmpFile(readFile('delete_todo_api.tmp').trim(), 4)
                     env.DELETE_TODO_API = result
 
 
