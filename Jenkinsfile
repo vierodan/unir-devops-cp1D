@@ -51,13 +51,14 @@ pipeline {
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            sh "bandit \
-                                --exit-zero \
-                                -r src \
-                                -f custom \
-                                -o bandit.out \
-                                --severity-level medium \
-                                --msg-template "{abspath}:{line}: [{test_id}] {msg}""
+                            sh "
+                                bandit \
+                                    --exit-zero \
+                                    -r src \
+                                    -f custom \
+                                    -o bandit.out \
+                                    --severity-level medium \
+                                    --msg-template '{abspath}:{line}: [{test_id}] {msg}'"
                             
                             recordIssues( 
                                 tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')], 
