@@ -103,6 +103,10 @@ pipeline {
                 CREATE_TODO_API = 'init'
             }
             steps {
+                
+                echo "Value for --> STAGE: ${env.STAGE}"
+                echo "Value for --> AWS_REGION: ${env.AWS_REGION}"
+
                 script {
                     //asign permissions to extract_output.sh script
                     sh "chmod +x extract_outputs.sh"

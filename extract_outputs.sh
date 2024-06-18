@@ -1,11 +1,18 @@
-input_environment = $1
-input_region = $2
+#!/bin/bash
 
-echo "Input 1: $input_environment"
-echo "Input 2: $input_region"
+if [ "$#" -lt 2 ]; then
+  echo "Usage: $0 <stage> <region>"
+  exit 1
+fi
+
+stage = $1
+region = $2
+
+echo "Input 1 stage: $stage"
+echo "Input 2 region: $region"
 
 
-outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-$input_environment --region $input_region | jq '.Stacks[0].Outputs')
+outputs=$(aws cloudformation describe-stacks --stack-name todo-list-aws-$stage --region $region | jq '.Stacks[0].Outputs')
 
 extract_value() {
     echo "$outputs" | jq -r ".[] | select(.OutputKey==\"$1\") | .OutputValue"
