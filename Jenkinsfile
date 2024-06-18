@@ -21,7 +21,7 @@ pipeline {
                             echo 'Host name, User and Workspace'
                             hostname
                             whoami
-                            pwd
+                            ${WORKSPACE}
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -47,7 +47,7 @@ pipeline {
                             echo 'Host name, User and Workspace'
                             hostname
                             whoami
-                            pwd
+                            ${WORKSPACE}
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -141,9 +141,27 @@ pipeline {
                 echo "Value for --> ENDPOINT_CREATE_TODO_API: ${env.ENDPOINT_CREATE_TODO_API}"
             }
         }
+        stage('Api Tests') {
+            steps {
+                sh """
+                    echo 'Host name, User and Workspace'
+                    hostname
+                    whoami
+                    ${WORKSPACE}
+                """
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') 
+                    sh """
+                        set PYTHONPATH=${WORKSPACE}
+                        export BASE_URL=${env.ENDPOINT_BASE_URL_API}
+                        pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
+                    """
+                }
+            }
+        }
         stage('Results') {
             steps {
                 sh """
+                    junit 'result*.xml'
                     echo 'Finish'
                 """
             }
