@@ -143,17 +143,18 @@ pipeline {
         }
         stage('Api Integration Tests') {
             steps {
-                sh """
-                    echo 'Host name, User and Workspace'
-                    hostname
-                    whoami
-                    pwd
-                """
-                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') 
                     sh """
-                        export BASE_URL=${env.ENDPOINT_BASE_URL_API}
-                        pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
+                        echo 'Host name, User and Workspace'
+                        hostname
+                        whoami
+                        pwd
                     """
+                    catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                        sh """
+                            export BASE_URL=${env.ENDPOINT_BASE_URL_API}
+                            pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
+                        """
+                    }
                 }
             }
         stage('Results') {
