@@ -141,7 +141,7 @@ pipeline {
                 echo "Value for --> ENDPOINT_CREATE_TODO_API: ${env.ENDPOINT_CREATE_TODO_API}"
             }
         }
-        stage('Api Tests') {
+        stage('Api Integration Tests') {
             steps {
                 sh """
                     echo 'Host name, User and Workspace'
@@ -157,7 +157,6 @@ pipeline {
                     """
                 }
             }
-        }
         stage('Results') {
             steps {
                 sh """
