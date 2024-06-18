@@ -115,6 +115,7 @@ pipeline {
                     //execute extract_output.sh script for extract outputs url's from sam deploy command
                     sh "./extract_outputs.sh ${env.STAGE} ${env.AWS_REGION}"
 
+                    sleep time: 1, unit: 'SECONDS'
 
                     sh "./read_tmp_file.sh delete_todo_api.tmp 4"
                     echo $RESULT_READ_TMP_FILE
