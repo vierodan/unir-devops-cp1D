@@ -108,23 +108,22 @@ pipeline {
                 echo "Value for --> AWS_REGION: ${env.AWS_REGION}"
 
                 script {
-                    //asign permissions to execut scripts script
+                    //asign permissions to execut scripts
                     sh "chmod +x extract_outputs.sh"
                     sh "chmod +x read_tmp_file.sh"
 
                     //execute extract_output.sh script for extract outputs url's from sam deploy command
                     sh "./extract_outputs.sh ${env.STAGE} ${env.AWS_REGION}"
 
-                    sleep time: 1, unit: 'SECONDS'
+                    //list temporal files created with url's for all endpoint
+                    sh "ls -l *.tmp"
+
+                    sleep time: 3, unit: 'SECONDS'
 
                     sh "./read_tmp_file.sh delete_todo_api.tmp 4"
                     echo $RESULT_READ_TMP_FILE
                     env.DELETE_TODO_API = $RESULT_READ_TMP_FILE
 
-                    //list temporal files created with url's for all endpoint
-                    sh "ls -l *.tmp"
-
-                
 
                     //read temporal files and asing the value to environment variable
                     env.BASE_URL_API = readFile('base_url_api.tmp').trim()
