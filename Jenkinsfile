@@ -149,9 +149,9 @@ pipeline {
             }
         stage('Results') {
             steps {
-                sh """
-                    echo 'Finish'
-                """
+                sleep(time: 5, unit: 'SECONDS')
+                junit 'result*.xml'
+                echo 'Finish'
             }
         }
     }
