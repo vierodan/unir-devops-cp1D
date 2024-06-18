@@ -129,8 +129,9 @@ pipeline {
                         return result
                     }
 
-                    executeCutTmpFile(readFile('delete_todo_api.tmp').trim(), 4)
-                    env.ENDPOINT_DELETE_TODO_API = $RESULT_CUT_TMP_FILE
+                    def url = readFile('delete_todo_api.tmp').trim()
+                    sh "./cut_tmp_file.sh ${url} 4"
+                    env.ENDPOINT_DELETE_TODO_API = readFile('cut.tmp').trim()
 
                     sleep time: 3, unit: 'SECONDS'
 
