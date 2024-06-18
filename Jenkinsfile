@@ -120,9 +120,17 @@ pipeline {
 
                     sleep time: 3, unit: 'SECONDS'
 
-                    sh "./read_tmp_file.sh delete_todo_api.tmp 4"
-                    echo $RESULT_READ_TMP_FILE
-                    env.DELETE_TODO_API = $RESULT_READ_TMP_FILE
+                    def executeReadTmpFile = { file, cut ->
+                        def result = sh(
+                            script: "./read_tmp_file.sh ${file} ${cut}",
+                            returnStdout: true
+                        ).trim()
+                        
+                        return result
+                    }
+
+                    def result = executeReadTmpFile(delete_todo_api.tmp, 4)
+                    env.DELETE_TODO_API = result
 
 
                     //read temporal files and asing the value to environment variable
