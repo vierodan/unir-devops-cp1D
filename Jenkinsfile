@@ -95,12 +95,12 @@ pipeline {
         stage('Extract Stack Outputs') {
             //env variables for output endpoint from sam deploy command
             environment {
-                BASE_URL_API = 'init'
-                DELETE_TODO_API = 'init'
-                LIST_TODOS_API = 'init'
-                UPDATE_TODO_API = 'init'
-                GET_TODO_API = 'init'
-                CREATE_TODO_API = 'init'
+                ENDPOINT_BASE_URL_API = 'init'
+                ENDPOINT_DELETE_TODO_API = 'init'
+                ENDPOINT_LIST_TODOS_API = 'init'
+                ENDPOINT_UPDATE_TODO_API = 'init'
+                ENDPOINT_GET_TODO_API = 'init'
+                ENDPOINT_CREATE_TODO_API = 'init'
             }
             steps {
 
@@ -130,16 +130,16 @@ pipeline {
                     }
 
                     def result = executeCutTmpFile(readFile('delete_todo_api.tmp').trim(), 4)
-                    env.DELETE_TODO_API = result
+                    env.ENDPOINT_DELETE_TODO_API = result
 
 
                     //read temporal files and asing the value to environment variable
-                    env.BASE_URL_API = readFile('base_url_api.tmp').trim()
-                    //env.DELETE_TODO_API = readFile('delete_todo_api.tmp').trim()
-                    env.LIST_TODOS_API = readFile('list_todos_api.tmp').trim()
-                    env.UPDATE_TODO_API = readFile('update_todo_api.tmp').trim()
-                    env.GET_TODO_API = readFile('get_todo_api.tmp').trim()
-                    env.CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
+                    env.ENDPOINT_BASE_URL_API = readFile('base_url_api.tmp').trim()
+                    //env.ENDPOINT_DELETE_TODO_API = readFile('delete_todo_api.tmp').trim()
+                    env.ENDPOINT_LIST_TODOS_API = readFile('list_todos_api.tmp').trim()
+                    env.ENDPOINT_UPDATE_TODO_API = readFile('update_todo_api.tmp').trim()
+                    env.ENDPOINT_GET_TODO_API = readFile('get_todo_api.tmp').trim()
+                    env.ENDPOINT_CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
 
                     //clean temporal files
                     sh "rm *.tmp"
@@ -148,12 +148,12 @@ pipeline {
         }
         stage('test variables'){
             steps{
-                echo "Value for --> BASE_URL_API: ${env.BASE_URL_API}"
-                echo "Value for --> DELETE_TODO_API: ${env.DELETE_TODO_API}"
-                echo "Value for --> LIST_TODOS_API: ${env.LIST_TODOS_API}"
-                echo "Value for --> UPDATE_TODO_API: ${env.UPDATE_TODO_API}"
-                echo "Value for --> GET_TODO_API: ${env.GET_TODO_API}"
-                echo "Value for --> CREATE_TODO_API: ${env.CREATE_TODO_API}"
+                echo "Value for --> BASE_URL_API: ${env.ENDPOINT_BASE_URL_API}"
+                echo "Value for --> DELETE_TODO_API: ${env.ENDPOINT_DELETE_TODO_API}"
+                echo "Value for --> LIST_TODOS_API: ${env.ENDPOINT_LIST_TODOS_API}"
+                echo "Value for --> UPDATE_TODO_API: ${env.ENDPOINT_UPDATE_TODO_API}"
+                echo "Value for --> GET_TODO_API: ${env.ENDPINT_GET_TODO_API}"
+                echo "Value for --> CREATE_TODO_API: ${env.ENDPOINT_CREATE_TODO_API}"
             }
         }
         stage('Results') {
