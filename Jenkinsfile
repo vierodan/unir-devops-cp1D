@@ -96,11 +96,6 @@ pipeline {
             //env variables for output endpoint from sam deploy command
             environment {
                 ENDPOINT_BASE_URL_API = 'init'
-                ENDPOINT_DELETE_TODO_API = 'init'
-                ENDPOINT_LIST_TODOS_API = 'init'
-                ENDPOINT_UPDATE_TODO_API = 'init'
-                ENDPOINT_GET_TODO_API = 'init'
-                ENDPOINT_CREATE_TODO_API = 'init'
             }
             steps {
 
@@ -120,11 +115,6 @@ pipeline {
                     //read temporal files and asing the value to environment variable
                     def base_url = readFile('base_url_api.tmp').trim()
                     env.ENDPOINT_BASE_URL_API = "${base_url}"
-                    env.ENDPOINT_LIST_TODOS_API = "${base_url}/todos"
-                    env.ENDPOINT_CREATE_TODO_API = "${base_url}/todos"
-                    env.ENDPOINT_DELETE_TODO_API = "${base_url}/todos/"
-                    env.ENDPOINT_UPDATE_TODO_API = "${base_url}/todos/"
-                    env.ENDPOINT_GET_TODO_API = "${base_url}/todos/"
 
                     //clean temporal files
                     sh "rm *.tmp"
@@ -145,8 +135,24 @@ pipeline {
                             pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
                         """
                     }
+            }
+        }
+        stage('Merge develop to master') {
+            steps {
+                script {
+                    checkout scm
+
+                    sh "git checkout develop"
+                    sh "git pull origin develop"
+
+                    sh "git checkout master"
+                    sh "git pull origin master"
+
+                    sh "git merge --no-ff develop -m 'Merge branch develop into master'"
+                    sh "git push origin master"
                 }
             }
+        }
         stage('Results') {
             steps {
                 sleep(time: 5, unit: 'SECONDS')
