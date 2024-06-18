@@ -129,9 +129,8 @@ pipeline {
                         return result
                     }
 
-                    def url_from_file = readFile('delete_todo_api.tmp').trim()
-                    def result_cut = executeCutTmpFile(url_from_file, 4)
-                    env.ENDPOINT_DELETE_TODO_API = result_cut
+                    executeCutTmpFile(readFile('delete_todo_api.tmp').trim(), 4)
+                    env.ENDPOINT_DELETE_TODO_API = RESULT_CUT_TMP_FILE
 
                     sleep time: 3, unit: 'SECONDS'
 
