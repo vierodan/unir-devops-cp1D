@@ -120,9 +120,9 @@ pipeline {
 
                     sleep time: 3, unit: 'SECONDS'
 
-                    def executeCutTmpFile = { content, cut ->
+                    def executeCutTmpFile = { content, cut, file ->
                         def result = sh(
-                            script: "./cut_tmp_file.sh ${content} ${cut}",
+                            script: "./cut_tmp_file.sh ${content} ${cut} ${file}",
                             returnStdout: true
                         ).trim()
                         
@@ -133,18 +133,18 @@ pipeline {
                     env.ENDPOINT_BASE_URL_API = readFile('base_url_api.tmp').trim()
 
                     def delete_url = readFile('delete_todo_api.tmp').trim()
-                    sh "./cut_tmp_file.sh ${delete_url} 4"
-                    env.ENDPOINT_DELETE_TODO_API = readFile('cut.tmp').trim()
+                    sh "./cut_tmp_file.sh ${delete_url} 4 delete_cut.tmp"
+                    env.ENDPOINT_DELETE_TODO_API = readFile('delete_cut.tmp').trim()
 
                     nv.ENDPOINT_LIST_TODOS_API = readFile('list_todos_api.tmp').trim()
 
                     def update_url = readFile('update_todo_api.tmp').trim()
-                    sh "./cut_tmp_file.sh ${update_url} 4"
-                    env.ENDPOINT_UPDATE_TODO_API = readFile('cut.tmp').trim()
+                    sh "./cut_tmp_file.sh ${update_url} 4 update_cut.tmp"
+                    env.ENDPOINT_UPDATE_TODO_API = readFile('update_cut.tmp').trim()
 
                     def get_url = readFile('update_todo_api.tmp').trim()
-                    sh "./cut_tmp_file.sh ${get_url} 4"
-                    env.ENDPOINT_GET_TODO_API = readFile('cut.tmp').trim()
+                    sh "./cut_tmp_file.sh ${get_url} 4 get_cut.tmp"
+                    env.ENDPOINT_GET_TODO_API = readFile('get_cut.tmp').trim()
 
                     env.ENDPOINT_CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
 
