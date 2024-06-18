@@ -131,16 +131,6 @@ pipeline {
                 }
             }
         }
-        stage('test variables'){
-            steps{
-                echo "Value for --> ENDPOINT_BASE_URL_API: ${env.ENDPOINT_BASE_URL_API}"
-                echo "Value for --> ENDPOINT_DELETE_TODO_API: ${env.ENDPOINT_DELETE_TODO_API}"
-                echo "Value for --> ENDPOINT_LIST_TODOS_API: ${env.ENDPOINT_LIST_TODOS_API}"
-                echo "Value for --> ENDPOINT_UPDATE_TODO_API: ${env.ENDPOINT_UPDATE_TODO_API}"
-                echo "Value for --> ENDPOINT_GET_TODO_API: ${env.ENDPOINT_GET_TODO_API}"
-                echo "Value for --> ENDPOINT_CREATE_TODO_API: ${env.ENDPOINT_CREATE_TODO_API}"
-            }
-        }
         stage('Api Integration Tests') {
             steps {
                     sh """
