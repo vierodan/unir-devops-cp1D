@@ -5,8 +5,8 @@ if [ "$#" -lt 2 ]; then
   exit 1
 fi
 
-stage = $1
-region = $2
+stage=$1
+region=$2
 
 echo "Input 1 stage: $stage"
 echo "Input 2 region: $region"
