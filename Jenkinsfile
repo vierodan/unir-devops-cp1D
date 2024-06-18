@@ -146,10 +146,8 @@ pipeline {
                     sh "./cut_tmp_file.sh ${get_url} 4 get_cut.tmp"
                     env.ENDPOINT_GET_TODO_API = readFile('get_cut.tmp').trim()
 
-                    
-
                     //clean temporal files
-                    //sh "rm *.tmp"
+                    sh "rm *.tmp"
                 }
             }
         }

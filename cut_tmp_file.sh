@@ -16,6 +16,7 @@ echo "cut_tmp_file.sh --> Input 3 'file' value: $file"
 trimmed_content=$(echo "$content" | xargs)
 result=${trimmed_content:0:${#trimmed_content}-$cut}
 
+echo "cut_tmp_file.sh --> Result value: $result"
 echo $result > $file
 
 
