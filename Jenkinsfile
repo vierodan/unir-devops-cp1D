@@ -134,12 +134,12 @@ pipeline {
 
 
                     //read temporal files and asing the value to environment variable
-                    env.ENDPOINT_BASE_URL_API = readFile('base_url_api.tmp').trim()
+                    //env.ENDPOINT_BASE_URL_API = readFile('base_url_api.tmp').trim()
                     //env.ENDPOINT_DELETE_TODO_API = readFile('delete_todo_api.tmp').trim()
-                    env.ENDPOINT_LIST_TODOS_API = readFile('list_todos_api.tmp').trim()
-                    env.ENDPOINT_UPDATE_TODO_API = readFile('update_todo_api.tmp').trim()
-                    env.ENDPOINT_GET_TODO_API = readFile('get_todo_api.tmp').trim()
-                    env.ENDPOINT_CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
+                    //env.ENDPOINT_LIST_TODOS_API = readFile('list_todos_api.tmp').trim()
+                    //env.ENDPOINT_UPDATE_TODO_API = readFile('update_todo_api.tmp').trim()
+                    //env.ENDPOINT_GET_TODO_API = readFile('get_todo_api.tmp').trim()
+                    //env.ENDPOINT_CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
 
                     //clean temporal files
                     sh "rm *.tmp"

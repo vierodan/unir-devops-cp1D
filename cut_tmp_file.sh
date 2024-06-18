@@ -8,10 +8,11 @@ fi
 content=$1
 cut=$2
 
-echo "Input 1 file: $content"
+echo "cut_tmp_file.sh --> Input 1 'content' value: $content"
+echo "cut_tmp_file.sh --> Input 2 'cut' value: $cut"
 trimmed_content=$(echo "$content" | xargs)
 result=${trimmed_content:0:${#trimmed_content}-$cut}
 export RESULT_READ_TMP_FILE=$result
-echo $RESULT_READ_TMP_FILE
+echo "Result of cut_tmp_file.sh execution --> result $RESULT_READ_TMP_FILE"
 
 
