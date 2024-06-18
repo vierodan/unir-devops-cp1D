@@ -142,14 +142,14 @@ pipeline {
                 script {
                     checkout scm
 
-                    sh "git checkout develop"
-                    sh "git pull origin develop"
+                    sh(script: 'git checkout develop', waitForCompletion: true)
+                    sh(script: 'git pull origin develop', waitForCompletion: true)
 
-                    sh "git checkout master"
-                    sh "git pull origin master"
+                    sh(script: 'git checkout master', waitForCompletion: true)
+                    sh(script: 'git pull origin master', waitForCompletion: true)
 
-                    sh "git merge --no-ff develop -m 'Merge branch develop into master'"
-                    sh "git push origin master"
+                    sh(script: 'git merge --no-ff develop -m "Merge branch develop into master"', waitForCompletion: true)
+                    sh(script: 'git push origin master', waitForCompletion: true)
                 }
             }
         }
