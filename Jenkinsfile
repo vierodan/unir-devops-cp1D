@@ -129,9 +129,9 @@ pipeline {
                         return result
                     }
 
-                    def result = executeCutTmpFile(readFile('delete_todo_api.tmp').trim(), 4)
-                    env.ENDPOINT_DELETE_TODO_API = result
+                    env.ENDPOINT_DELETE_TODO_API = executeCutTmpFile(readFile('delete_todo_api.tmp').trim(), 4)
 
+                    sleep time: 3, unit: 'SECONDS'
 
                     //read temporal files and asing the value to environment variable
                     //env.ENDPOINT_BASE_URL_API = readFile('base_url_api.tmp').trim()
@@ -142,18 +142,18 @@ pipeline {
                     //env.ENDPOINT_CREATE_TODO_API = readFile('create_todo_api.tmp').trim()
 
                     //clean temporal files
-                    sh "rm *.tmp"
+                    //sh "rm *.tmp"
                 }
             }
         }
         stage('test variables'){
             steps{
-                echo "Value for --> BASE_URL_API: ${env.ENDPOINT_BASE_URL_API}"
-                echo "Value for --> DELETE_TODO_API: ${env.ENDPOINT_DELETE_TODO_API}"
-                echo "Value for --> LIST_TODOS_API: ${env.ENDPOINT_LIST_TODOS_API}"
-                echo "Value for --> UPDATE_TODO_API: ${env.ENDPOINT_UPDATE_TODO_API}"
-                echo "Value for --> GET_TODO_API: ${env.ENDPINT_GET_TODO_API}"
-                echo "Value for --> CREATE_TODO_API: ${env.ENDPOINT_CREATE_TODO_API}"
+                echo "Value for --> ENDPOINT_BASE_URL_API: ${env.ENDPOINT_BASE_URL_API}"
+                echo "Value for --> ENDPOINT_DELETE_TODO_API: ${env.ENDPOINT_DELETE_TODO_API}"
+                echo "Value for --> ENDPOINT_LIST_TODOS_API: ${env.ENDPOINT_LIST_TODOS_API}"
+                echo "Value for --> ENDPOINT_UPDATE_TODO_API: ${env.ENDPOINT_UPDATE_TODO_API}"
+                echo "Value for --> ENDPOINT_GET_TODO_API: ${env.ENDPOINT_GET_TODO_API}"
+                echo "Value for --> ENDPOINT_CREATE_TODO_API: ${env.ENDPOINT_CREATE_TODO_API}"
             }
         }
         stage('Results') {
