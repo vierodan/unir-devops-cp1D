@@ -19,7 +19,7 @@ extract_value() {
 }
 
 BASE_URL_API=$(extract_value "BaseUrlApi")
-DELETE_TODO_API=$(extract_value "DeleteTodoApi")
+#DELETE_TODO_API=$(extract_value "DeleteTodoApi")
 LIST_TODOS_API=$(extract_value "ListTodosApi")
 UPDATE_TODO_API=$(extract_value "UpdateTodoApi")
 GET_TODO_API=$(extract_value "GetTodoApi")
