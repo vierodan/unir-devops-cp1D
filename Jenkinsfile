@@ -18,15 +18,17 @@ pipeline {
         stage('Static Analysis') {
             stage('Checkout Develop') {
                 steps {
-                    script {
-                        withCredentials([string(credentialsId: env.GIT_CREDENTIALS, variable: 'GIT_PAT')]) {
-                            sh '''
-                                git config --global credential.helper store
-                                echo "https://${GIT_PAT}:x-oauth-basic@github.com" > ~/.git-credentials
-                                git clone --branch develop ${GIT_REPO_URL} .
-                            '''
-                        }
+                script {
+                    withCredentials([string(credentialsId: env.GIT_CREDENTIALS_ID, variable: 'GIT_PAT')]) {
+                        // Full checkout using the provided PAT
+                        sh """
+                            git config --global credential.helper store
+                            echo "https://${GIT_PAT}:x-oauth-basic@github.com" > ~/.git-credentials
+                            git clone ${GIT_REPO_URL} .
+                            git checkout develop
+                        """
                     }
+                }
                 }
             }
             parallel {
