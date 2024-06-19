@@ -6,7 +6,7 @@ pipeline {
     //
     environment {
         GIT_REPO_URL = 'https://github.com/vierodan/unir-devops-cp1D.git'
-        GIT_CREDENTIALS = 'git_pat'
+        GIT_CREDENTIALS_ID = 'git_pat'
         AWS_REGION = 'us-east-1'
         STACK_NAME = 'todo-list-aws-staging'
         S3_BUCKET = 'aws-sam-cli-managed-default-samclisourcebucket-hwr6ts9w4rff'
@@ -15,22 +15,26 @@ pipeline {
     }
 
     stages {
-        stage('Static Analysis') {
-            stage('Checkout Develop') {
-                steps {
+        stage('Checkout Develop') {
+            steps {
                 script {
                     withCredentials([string(credentialsId: env.GIT_CREDENTIALS_ID, variable: 'GIT_PAT')]) {
-                        // Full checkout using the provided PAT
-                        sh """
-                            git config --global credential.helper store
-                            echo "https://${GIT_PAT}:x-oauth-basic@github.com" > ~/.git-credentials
-                            git clone ${GIT_REPO_URL} .
-                            git checkout develop
-                        """
+                        // Perform the checkout of the develop branch using the provided PAT
+                        checkout([$class: 'GitSCM', 
+                            branches: [[name: 'refs/heads/develop']],
+                            userRemoteConfigs: [[
+                                url: env.GIT_REPO_URL, 
+                                credentialsId: env.GIT_CREDENTIALS_ID,
+                                refspec: '+refs/heads/develop:refs/remotes/origin/develop'
+                            ]],
+                            doGenerateSubmoduleConfigurations: false,
+                            extensions: []
+                        ])
                     }
                 }
-                }
             }
+        }
+        stage('Static Analysis') {
             parallel {
                  stage('Static Code'){
                     steps{
@@ -157,10 +161,15 @@ pipeline {
         stage('Merge to Master') {
             steps {
                 script {
-                    sh "git checkout master"
-                    sh "git pull"
-                    sh "git merge origin/develop"
-                    sh "git push origin master"
+                    withCredentials([string(credentialsId: env.GIT_CREDENTIALS_ID, variable: 'GIT_PAT')]) {
+                        sh """
+                            git config --global credential.helper store
+                            echo "https://${GIT_PAT}:x-oauth-basic@github.com" > ~/.git-credentials
+                            git checkout master
+                            git merge origin/develop
+                            git push origin master
+                        """
+                    }
                 }
             }
         }
