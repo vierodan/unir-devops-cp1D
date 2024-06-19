@@ -141,6 +141,9 @@ pipeline {
             steps {
                 script {
                     sh """
+                        git add .
+                        git commit -m "jenkins commit"
+                        git push
                         git checkout master
                         git merge origin/develop
                         git push origin master
