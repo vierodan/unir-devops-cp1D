@@ -123,38 +123,43 @@ pipeline {
         }
         stage('Api Integration Tests') {
             steps {
+                sh """
+                    echo 'Host name, User and Workspace'
+                    hostname
+                    whoami
+                    pwd
+                """
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh """
-                        echo 'Host name, User and Workspace'
-                        hostname
-                        whoami
-                        pwd
+                        export BASE_URL=${env.ENDPOINT_BASE_URL_API}
+                        pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
                     """
-                    catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                        sh """
-                            export BASE_URL=${env.ENDPOINT_BASE_URL_API}
-                            pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
-                        """
-                    }
+                }
             }
         }
         stage('Merge to Master') {
             steps {
-                script {
-                    sh """
-                        echo 'Host name, User and Workspace'
-                        hostname
-                        whoami
-                        pwd
-                    """
+                sh """
+                    echo 'Host name, User and Workspace'
+                    hostname
+                    whoami
+                    pwd
+                """
 
-                    catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                        sh """
-                            git checkout -- .
-                            git checkout master
-                            git pull
-                            git merge origin/develop
-                            git push origin master
-                        """
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                        withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
+                                sh """
+                                    git config --global user.email "vierodan@gmail.com"
+                                    git config --global user.name "vierodan"
+
+                                    git checkout -- .
+                                    git checkout master
+                                    git pull https://$PAT@github.com/vierodan/unir-devops-cp1D.git master
+                                    git fetch origin
+                                    git merge origin/develop || (git merge --abort && exit 1)
+                                    git push https://$PAT@github.com/vierodan/unir-devops-cp1D.git master
+                                """
+                        }
                     }
                 }
             }
