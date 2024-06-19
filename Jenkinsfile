@@ -5,6 +5,8 @@ pipeline {
 
     //
     environment {
+        GIT_REPO_URL = 'https://github.com/vierodan/unir-devops-cp1D.git'
+        GIT_CREDENTIALS = 'git_pat'
         AWS_REGION = 'us-east-1'
         STACK_NAME = 'todo-list-aws-staging'
         S3_BUCKET = 'aws-sam-cli-managed-default-samclisourcebucket-hwr6ts9w4rff'
@@ -14,6 +16,19 @@ pipeline {
 
     stages {
         stage('Static Analysis') {
+            stage('Checkout Develop') {
+                steps {
+                    script {
+                        withCredentials([string(credentialsId: env.GIT_CREDENTIALS, variable: 'GIT_PAT')]) {
+                            sh '''
+                                git config --global credential.helper store
+                                echo "https://${GIT_PAT}:x-oauth-basic@github.com" > ~/.git-credentials
+                                git clone --branch develop ${GIT_REPO_URL} .
+                            '''
+                        }
+                    }
+                }
+            }
             parallel {
                  stage('Static Code'){
                     steps{
@@ -141,6 +156,7 @@ pipeline {
             steps {
                 script {
                     sh "git checkout master"
+                    sh "git pull"
                     sh "git merge origin/develop"
                     sh "git push origin master"
                 }
