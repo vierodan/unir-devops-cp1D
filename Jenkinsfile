@@ -13,9 +13,9 @@ pipeline {
     }
 
     stages {
-        stage('Static Analysis') {
+        stage('Static tests') {
             parallel {
-                 stage('Static Code'){
+                 stage('Static code'){
                     steps{
                         sh """
                             echo 'Host name:'; hostname
@@ -40,7 +40,7 @@ pipeline {
                         }
                     }
                 }
-                stage('Security Code'){
+                stage('Security code'){
                     steps{
                         sh """
                             echo 'Host name:'; hostname
@@ -96,7 +96,7 @@ pipeline {
                         --no-confirm-changeset"
             }
         }
-        stage('Extract Stack Outputs') {
+        stage('Extract stack outputs') {
             //env variables for output endpoint from sam deploy command
             environment {
                 ENDPOINT_BASE_URL_API = 'init'
@@ -130,7 +130,7 @@ pipeline {
                 }
             }
         }
-        stage('Api Integration Tests') {
+        stage('Integration tests') {
             steps {
                 sh """
                     echo 'Host name:'; hostname
@@ -146,7 +146,7 @@ pipeline {
                 }
             }
         }
-        stage('Merge to Master') {
+        stage('Promote merge to master') {
             steps {
                 sh """
                     echo 'Host name:'; hostname
