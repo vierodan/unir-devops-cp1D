@@ -150,6 +150,7 @@ pipeline {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                         sh """
                             git checkout master
+                            git pull
                             git merge origin/develop
                             git push origin master
                         """
