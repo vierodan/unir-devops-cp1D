@@ -141,13 +141,19 @@ pipeline {
             steps {
                 script {
                     sh """
-                        git add .
-                        git commit -m "jenkins commit"
-                        git push
-                        git checkout master
-                        git merge origin/develop
-                        git push origin master
+                        echo 'Host name, User and Workspace'
+                        hostname
+                        whoami
+                        pwd
                     """
+
+                    catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                        sh """
+                            git checkout master
+                            git merge origin/develop
+                            git push origin master
+                        """
+                    }
                 }
             }
         }
