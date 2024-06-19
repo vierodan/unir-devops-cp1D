@@ -166,7 +166,18 @@ pipeline {
             steps {
                 sleep(time: 5, unit: 'SECONDS')
                 junit 'result*.xml'
-                echo 'Finish'
+            }
+            post {
+                success {
+                    echo 'Pipeline completed successfully.'
+                }
+                failure {
+                    echo 'Pipeline failed.'
+                }
+                always {
+                    // Cleanup credentials
+                    sh 'rm -f ~/.git-credentials'
+                }
             }
         }
     }
