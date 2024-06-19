@@ -137,19 +137,12 @@ pipeline {
                     }
             }
         }
-        stage('Merge develop to master') {
+        stage('Merge to Master') {
             steps {
                 script {
-                    checkout scm
-
-                    sh 'git checkout develop'
-                    sh 'git pull'
-
-                    sh 'git checkout master'
-                    sh 'git pull'
-
-                    sh 'git merge --no-ff develop -m "Merge branch develop into master"'
-                    sh 'git push'
+                    sh "git checkout master"
+                    sh "git merge origin/develop"
+                    sh "git push origin master"
                 }
             }
         }
