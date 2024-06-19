@@ -18,10 +18,9 @@ pipeline {
                  stage('Static Code'){
                     steps{
                         sh """
-                            echo 'Host name, User and Workspace'
-                            hostname
-                            whoami
-                            pwd
+                            echo 'Host name:' hostname
+                            echo 'User:' whoami
+                            echo 'Workspace:' pwd
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -44,10 +43,9 @@ pipeline {
                 stage('Security Code'){
                     steps{
                         sh """
-                            echo 'Host name, User and Workspace'
-                            hostname
-                            whoami
-                            pwd
+                            echo 'Host name:' hostname
+                            echo 'User:' whoami
+                            echo 'Workspace:' pwd
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -74,6 +72,12 @@ pipeline {
         }
         stage('Deploy'){
             steps{
+                sh """
+                    echo 'Host name:' hostname
+                    echo 'User:' whoami
+                    echo 'Workspace:' pwd
+                """
+
                 //sam build command
                 sh "sam build"
 
@@ -98,6 +102,11 @@ pipeline {
                 ENDPOINT_BASE_URL_API = 'init'
             }
             steps {
+                sh """
+                    echo 'Host name:' hostname
+                    echo 'User:' whoami
+                    echo 'Workspace:' pwd
+                """
 
                 echo "Value for --> STAGE: ${env.STAGE}"
                 echo "Value for --> AWS_REGION: ${env.AWS_REGION}"
@@ -124,11 +133,11 @@ pipeline {
         stage('Api Integration Tests') {
             steps {
                 sh """
-                    echo 'Host name, User and Workspace'
-                    hostname
-                    whoami
-                    pwd
+                    echo 'Host name:' hostname
+                    echo 'User:' whoami
+                    echo 'Workspace:' pwd
                 """
+
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh """
                         export BASE_URL=${env.ENDPOINT_BASE_URL_API}
@@ -140,10 +149,9 @@ pipeline {
         stage('Merge to Master') {
             steps {
                 sh """
-                    echo 'Host name, User and Workspace'
-                    hostname
-                    whoami
-                    pwd
+                    echo 'Host name:' hostname
+                    echo 'User:' whoami
+                    echo 'Workspace:' pwd
                 """
 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
