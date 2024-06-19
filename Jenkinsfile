@@ -18,9 +18,9 @@ pipeline {
                  stage('Static Code'){
                     steps{
                         sh """
-                            echo 'Host name:' hostname
-                            echo 'User:' whoami
-                            echo 'Workspace:' pwd
+                            echo 'Host name:'; hostname
+                            echo 'User:'; whoami
+                            echo 'Workspace:'; pwd
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -43,9 +43,9 @@ pipeline {
                 stage('Security Code'){
                     steps{
                         sh """
-                            echo 'Host name:' hostname
-                            echo 'User:' whoami
-                            echo 'Workspace:' pwd
+                            echo 'Host name:'; hostname
+                            echo 'User:'; whoami
+                            echo 'Workspace:'; pwd
                         """
                         
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -73,9 +73,9 @@ pipeline {
         stage('Deploy'){
             steps{
                 sh """
-                    echo 'Host name:' hostname
-                    echo 'User:' whoami
-                    echo 'Workspace:' pwd
+                    echo 'Host name:'; hostname
+                    echo 'User:'; whoami
+                    echo 'Workspace:'; pwd
                 """
 
                 //sam build command
@@ -103,9 +103,9 @@ pipeline {
             }
             steps {
                 sh """
-                    echo 'Host name:' hostname
-                    echo 'User:' whoami
-                    echo 'Workspace:' pwd
+                    echo 'Host name:'; hostname
+                    echo 'User:'; whoami
+                    echo 'Workspace:'; pwd
                 """
 
                 echo "Value for --> STAGE: ${env.STAGE}"
@@ -133,9 +133,9 @@ pipeline {
         stage('Api Integration Tests') {
             steps {
                 sh """
-                    echo 'Host name:' hostname
-                    echo 'User:' whoami
-                    echo 'Workspace:' pwd
+                    echo 'Host name:'; hostname
+                    echo 'User:'; whoami
+                    echo 'Workspace:'; pwd
                 """
 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -149,9 +149,9 @@ pipeline {
         stage('Merge to Master') {
             steps {
                 sh """
-                    echo 'Host name:' hostname
-                    echo 'User:' whoami
-                    echo 'Workspace:' pwd
+                    echo 'Host name:'; hostname
+                    echo 'User:'; whoami
+                    echo 'Workspace:'; pwd
                 """
 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
