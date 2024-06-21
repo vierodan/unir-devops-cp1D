@@ -155,10 +155,10 @@ pipeline {
                                 git config --global user.name "vierodan"
                                 git checkout -- .
                                 git checkout master
-                                git pull https://$PAT@github.com/vierodan/unir-devops-cp1D.git master
+                                git pull https://$GIT_PAT@github.com/vierodan/unir-devops-cp1D.git master
                                 git fetch origin
                                 git merge origin/develop || (git merge --abort && exit 1)
-                                git push https://$PAT@github.com/vierodan/unir-devops-cp1D.git master
+                                git push https://$GIT_PAT@github.com/vierodan/unir-devops-cp1D.git master
                             """
                         } 
                     }
