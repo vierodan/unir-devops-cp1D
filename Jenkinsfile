@@ -140,6 +140,9 @@ pipeline {
             }
         }
         stage('Promote merge to master') {
+            environment {
+                GIT_PAT = 'init'
+            }
             steps {
                 sh """
                     echo 'Host name:'; hostname
@@ -149,18 +152,19 @@ pipeline {
 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
-                        withEnv(["GIT_PAT=$PAT"]) {
-                            sh """
-                                git config --global user.email "vierodan@gmail.com"
-                                git config --global user.name "vierodan"
-                                git checkout -- .
-                                git checkout master
-                                git pull https://$GIT_PAT@github.com/vierodan/unir-devops-cp1D.git master
-                                git fetch origin
-                                git merge origin/develop || (git merge --abort && exit 1)
-                                git push https://$GIT_PAT@github.com/vierodan/unir-devops-cp1D.git master
-                            """
-                        } 
+                        env.GIT_PAT = "${$PAT}"
+
+                        sh """
+                            git config --global user.email "vierodan@gmail.com"
+                            git config --global user.name "vierodan"
+                            git checkout -- .
+                            git checkout master
+                            git pull https://${env.GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master
+                            git fetch origin
+                            git merge origin/develop || (git merge --abort && exit 1)
+                            git push https://${env.GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master
+                        """
+                        
                     }
                 }
             }
