@@ -82,9 +82,9 @@ pipeline {
                 //sam deploy command
                 sh "sam deploy \
                         --region ${env.AWS_REGION} \
+                        --config-env ${env.STAGE} \
                         --template-file template.yaml \
                         --config-file samconfig.toml \
-                        --parameter-overrides Stage=${env.STAGE} \
                         --no-fail-on-empty-changeset \
                         --no-confirm-changeset"
             }
