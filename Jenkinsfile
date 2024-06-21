@@ -149,6 +149,7 @@ pipeline {
 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
+                        withEnv(["GIT_PAT=$PAT"]) {
                             sh """
                                 git config --global user.email "vierodan@gmail.com"
                                 git config --global user.name "vierodan"
@@ -159,6 +160,7 @@ pipeline {
                                 git merge origin/develop || (git merge --abort && exit 1)
                                 git push https://$PAT@github.com/vierodan/unir-devops-cp1D.git master
                             """
+                        } 
                     }
                 }
             }
