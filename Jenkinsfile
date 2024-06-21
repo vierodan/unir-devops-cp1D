@@ -152,7 +152,6 @@ pipeline {
                             sh """
                                 git config --global user.email "vierodan@gmail.com"
                                 git config --global user.name "vierodan"
-
                                 git checkout -- .
                                 git checkout master
                                 git pull https://$PAT@github.com/vierodan/unir-devops-cp1D.git master
