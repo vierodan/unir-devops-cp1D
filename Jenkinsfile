@@ -2,16 +2,7 @@ pipeline {
     agent{
         label 'agent1'
     }
-
-    //
-    environment {
-        AWS_REGION = 'us-east-1'
-        STACK_NAME = 'todo-list-aws-staging'
-        S3_BUCKET = 'aws-sam-cli-managed-default-samclisourcebucket-hwr6ts9w4rff'
-        S3_PREFIX = 'staging'
-        STAGE = 'staging'
-    }
-
+    
     stages {
         stage('Static tests') {
             parallel {
@@ -86,13 +77,9 @@ pipeline {
                 //sam deploy command
                 sh "sam deploy \
                         --template-file template.yaml \
-                        --stack-name ${env.STACK_NAME} \
-                        --region ${env.AWS_REGION} \
+                        --config-file samconfig.toml \
                         --capabilities CAPABILITY_IAM \
-                        --parameter-overrides Stage=${env.STAGE} \
                         --no-fail-on-empty-changeset \
-                        --s3-bucket ${env.S3_BUCKET} \
-                        --s3-prefix ${env.S3_PREFIX} \
                         --no-confirm-changeset"
             }
         }
