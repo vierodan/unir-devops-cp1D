@@ -2,7 +2,12 @@ pipeline {
     agent{
         label 'agent1'
     }
-    
+
+    environment {
+        STAGE = 'staging'
+
+    }
+
     stages {
         stage('Static tests') {
             parallel {
@@ -76,9 +81,10 @@ pipeline {
 
                 //sam deploy command
                 sh "sam deploy \
+                        --region ${env.AWS_REGION} \
                         --template-file template.yaml \
                         --config-file samconfig.toml \
-                        --capabilities CAPABILITY_IAM \
+                        --parameter-overrides Stage=${env.STAGE} \
                         --no-fail-on-empty-changeset \
                         --no-confirm-changeset"
             }
