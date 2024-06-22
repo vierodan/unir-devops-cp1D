@@ -147,6 +147,8 @@ pipeline {
                         export BASE_URL=${env.ENDPOINT_BASE_URL_API}
                         pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
                     """
+
+                    sh 'exit 1' // Simulando una falla
                 }
             }
         }
