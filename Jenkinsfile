@@ -155,7 +155,7 @@ pipeline {
 
                         script {
                             // Asignar la variable de entorno correctamente
-                            env.GIT_PAT = "${PAT}"
+                            env.GIT_PAT = PAT
                             
                             // Validar la asignación imprimiendo el valor (asegúrate de no imprimir credenciales en entornos de producción)
                             echo "GIT_PAT is set to: ${env.GIT_PAT}"
