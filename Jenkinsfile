@@ -179,7 +179,7 @@ pipeline {
 
                             // Performing Git operations 
                             sh '''
-                                git checkout origin/master --Jenkinsfile
+                                git checkout origin/master -- Jenkinsfile
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git origin/master
                   
                                 git fetch origin
