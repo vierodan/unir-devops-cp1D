@@ -152,9 +152,13 @@ pipeline {
 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
-                        
-                        script{
+
+                        script {
+                            // Asignar la variable de entorno correctamente
                             env.GIT_PAT = "${PAT}"
+                            
+                            // Validar la asignación imprimiendo el valor (asegúrate de no imprimir credenciales en entornos de producción)
+                            echo "GIT_PAT is set to: ${env.GIT_PAT}"
                         }
 
                         sh """
