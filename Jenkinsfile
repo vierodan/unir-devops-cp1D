@@ -151,14 +151,19 @@ pipeline {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
 
                         script {
+                            // Setting Git configurations
                             sh "git config --global user.email 'vierodan@gmail.com'"
                             sh "git config --global user.name 'vierodan'"
-                            sh "git checkout -- ."
-                            sh "git checkout master"
-                            sh "git pull https://${PAT}@github.com/vierodan/unir-devops-cp1D.git master"
-                            sh "git fetch origin"
-                            sh "git merge origin/develop || (git merge --abort && exit 1)"
-                            sh "git push https://${PAT}@github.com/vierodan/unir-devops-cp1D.git master"
+
+                            // Performing Git operations
+                            sh """
+                                git checkout -- .
+                                git checkout master
+                                git pull https://${env.PAT}@github.com/vierodan/unir-devops-cp1D.git master
+                                git fetch origin
+                                git merge origin/develop || (git merge --abort && exit 1)
+                                git push https://${env.PAT}@github.com/vierodan/unir-devops-cp1D.git master
+                            """
                         }
                     }
                 }
