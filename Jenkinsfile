@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         AWS_REGION = 'us-east-1'
-        STAGE = 'production'
+        STAGE = 'staging'
     }
 
     stages {
@@ -179,19 +179,12 @@ pipeline {
 
                             // Performing Git operations 
                             sh '''
-                                git branch
-                                git reset --hard HEAD
-                                git clean -fd
-
+                                git checkout -- .
                                 git checkout master
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
-                                git branch
-
                                 git fetch origin
                                 git merge origin/develop || (git merge --abort && exit 1)
-
                                 git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
-
                             '''  
                         }
                     }
