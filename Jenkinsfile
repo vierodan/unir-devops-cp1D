@@ -154,24 +154,19 @@ pipeline {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
 
                         script {
-                            // Asignar la variable de entorno correctamente
-                            env.GIT_PAT = PAT
-                            
-                            // Validar la asignación imprimiendo el valor (asegúrate de no imprimir credenciales en entornos de producción)
-                            echo "GIT_PAT is set to: ${env.GIT_PAT}"
-                        }
-
-                        sh """
-                            git config --global user.email "vierodan@gmail.com"
-                            git config --global user.name "vierodan"
-                            git checkout -- .
-                            git checkout master
-                            git pull https://${env.GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master
-                            git fetch origin
-                            git merge origin/develop || (git merge --abort && exit 1)
-                            git push https://${env.GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master
-                        """
+                            env.GIT_PAT = $PAT
                         
+                            echo "GIT_PAT is set to: ${env.GIT_PAT}"
+
+                            sh "git config --global user.email 'vierodan@gmail.com'"
+                            sh "git config --global user.name 'vierodan'"
+                            sh "git checkout -- ."
+                            sh "git checkout master"
+                            sh "git pull https://${env.GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master"
+                            sh "git fetch origin"
+                            sh "git merge origin/develop || (git merge --abort && exit 1)"
+                            sh "git push https://${env.GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master"
+                        }
                     }
                 }
             }
