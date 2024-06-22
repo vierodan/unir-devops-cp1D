@@ -152,7 +152,10 @@ pipeline {
 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
-                        env.GIT_PAT = "${PAT}"
+                        
+                        script{
+                            env.GIT_PAT = "${PAT}"
+                        }
 
                         sh """
                             git config --global user.email "vierodan@gmail.com"
