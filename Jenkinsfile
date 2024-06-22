@@ -179,17 +179,17 @@ pipeline {
 
                             // Performing Git operations 
                             sh '''
-                                set -x
+                                git status
                                 git checkout -- .
-                                git checkout master
+
+                                git checkout master -- Jenkinnsfile
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
+                                git status
+
                                 git fetch origin
                                 git merge origin/develop || (git merge --abort && exit 1)
-                                git checkout origin/master -- Jenkinsfile
                                 git status
-                                git diff
-                                git commit -m "Merge develop into master, excluding Jenkinsfile"
-                                git log -5
+
                                 git push -v https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
                             '''  
                         }
