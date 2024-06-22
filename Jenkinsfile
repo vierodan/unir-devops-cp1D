@@ -155,7 +155,7 @@ pipeline {
                             sh "git config --global user.name 'vierodan'"
 
                             // Performing Git operations with PAT passed as environment variable
-                            withEnv(["GIT_PAT=${PAT}"]) {
+                            withEnv(['GIT_PAT=\${PAT}']) {
                                 sh '''
                                     git checkout -- .
                                     git checkout master
