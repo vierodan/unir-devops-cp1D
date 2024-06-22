@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         AWS_REGION = 'us-east-1'
-        STAGE = 'staging'
+        STAGE = 'default'
     }
 
     stages {
@@ -14,6 +14,7 @@ pipeline {
                  stage('Static code'){
                     steps{
                         sh """
+                            echo 'STAGE --> Static code'
                             echo 'Host name:'; hostname
                             echo 'User:'; whoami
                             echo 'Workspace:'; pwd
@@ -39,6 +40,7 @@ pipeline {
                 stage('Security code'){
                     steps{
                         sh """
+                            echo 'STAGE --> Security code'
                             echo 'Host name:'; hostname
                             echo 'User:'; whoami
                             echo 'Workspace:'; pwd
@@ -69,6 +71,7 @@ pipeline {
         stage('Deploy'){
             steps{
                 sh """
+                    echo 'STAGE --> Deploy'
                     echo 'Host name:'; hostname
                     echo 'User:'; whoami
                     echo 'Workspace:'; pwd
@@ -96,6 +99,7 @@ pipeline {
             }
             steps {
                 sh """
+                    echo 'STAGE --> Extract stack outputs'
                     echo 'Host name:'; hostname
                     echo 'User:'; whoami
                     echo 'Workspace:'; pwd
@@ -126,6 +130,7 @@ pipeline {
         stage('Integration tests') {
             steps {
                 sh """
+                    echo 'STAGE --> Integration tests'
                     echo 'Host name:'; hostname
                     echo 'User:'; whoami
                     echo 'Workspace:'; pwd
@@ -142,6 +147,7 @@ pipeline {
         stage('Promote merge to master') {
             steps {
                 sh """
+                    echo 'STAGE --> Promote merge to master'
                     echo 'Host name:'; hostname
                     echo 'User:'; whoami
                     echo 'Workspace:'; pwd
@@ -170,6 +176,13 @@ pipeline {
         }
         stage('Results') {
             steps {
+                sh """
+                    echo 'STAGE --> Results'
+                    echo 'Host name:'; hostname
+                    echo 'User:'; whoami
+                    echo 'Workspace:'; pwd
+                """
+
                 sleep(time: 5, unit: 'SECONDS')
                 junit 'result*.xml'
             }
