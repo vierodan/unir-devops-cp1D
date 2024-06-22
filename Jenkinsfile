@@ -179,6 +179,7 @@ pipeline {
 
                             // Performing Git operations 
                             sh '''
+                                git rev-parse --abbrev-ref HEAD
                                 git checkout -- .
                                 git checkout master
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
