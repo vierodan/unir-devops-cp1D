@@ -154,17 +154,16 @@ pipeline {
                             sh "git config --global user.email 'vierodan@gmail.com'"
                             sh "git config --global user.name 'vierodan'"
 
-                            // Performing Git operations with PAT passed as environment variable
-                            withEnv(['GIT_PAT=\${PAT}']) {
-                                sh '''
-                                    git checkout -- .
-                                    git checkout master
-                                    git pull https://${GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master
-                                    git fetch origin
-                                    git merge origin/develop || (git merge --abort && exit 1)
-                                    git push https://${GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master
-                                '''
-                            }
+                            // Performing Git operations 
+                            sh '''
+                                git checkout -- .
+                                git checkout master
+                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
+                                git fetch origin
+                                git merge origin/develop || (git merge --abort && exit 1)
+                                git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
+                            '''
+                            
                         }
                     }
                 }
