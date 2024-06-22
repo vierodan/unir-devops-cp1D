@@ -149,22 +149,21 @@ pipeline {
 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
-
                         script {
                             // Setting Git configurations
                             sh "git config --global user.email 'vierodan@gmail.com'"
                             sh "git config --global user.name 'vierodan'"
 
-                            // Performing Git operations
-                            withEnv(["PAT=${PAT}"]) {
-                                sh """
+                            // Performing Git operations with PAT passed as environment variable
+                            withEnv(["GIT_PAT=${PAT}"]) {
+                                sh '''
                                     git checkout -- .
                                     git checkout master
-                                    git pull https://$PAT@github.com/vierodan/unir-devops-cp1D.git master
+                                    git pull https://${GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master
                                     git fetch origin
                                     git merge origin/develop || (git merge --abort && exit 1)
-                                    git push https://$PAT@github.com/vierodan/unir-devops-cp1D.git master
-                                """
+                                    git push https://${GIT_PAT}@github.com/vierodan/unir-devops-cp1D.git master
+                                '''
                             }
                         }
                     }
