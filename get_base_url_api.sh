@@ -17,7 +17,7 @@ if [ -z "$stage" ]; then
 fi
 
 #check that Region is not missing or empty
-if [[ -z "$region" ]; then
+if [ -z "$region" ]; then
     echo "Error: Region is missing or empty."
     exit 1
 fi
