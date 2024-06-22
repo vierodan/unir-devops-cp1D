@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         AWS_REGION = 'us-east-1'
-        STAGE = 'default'
+        STAGE = 'staging'
     }
 
     stages {
