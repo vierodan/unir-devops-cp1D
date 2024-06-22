@@ -155,7 +155,13 @@ pipeline {
         stage('Promote merge to master') {
             when {
                 expression {
-                    return currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                    def result = currentBuild.result
+                    if (result == null || result == 'SUCCESS') {
+                        return true
+                    } else {
+                        echo 'Stage [Promote merge to master] skipped because Stage [Integration tests] fails'
+                        return false
+                    }
                 }
             }
             steps {
