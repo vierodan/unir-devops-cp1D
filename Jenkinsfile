@@ -179,13 +179,13 @@ pipeline {
 
                             // Performing Git operations 
                             sh '''
-                                git checkout origin/master -- Jenkinsfile
-                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git origin/master
+                                git checkout master -- Jenkinsfile
+                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
                   
                                 git fetch origin
                                 git merge origin/develop || (git merge --abort && exit 1)
 
-                                git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git origin/master
+                                git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
 
                             '''  
                         }
