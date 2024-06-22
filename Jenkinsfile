@@ -154,7 +154,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
 
                         script {
-                            env.GIT_PAT = $PAT
+                            env.GIT_PAT = PAT
                         
                             echo "GIT_PAT is set to: ${env.GIT_PAT}"
 
