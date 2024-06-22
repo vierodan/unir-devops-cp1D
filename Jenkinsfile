@@ -179,12 +179,17 @@ pipeline {
 
                             // Performing Git operations 
                             sh '''
-                                git rev-parse --abbrev-ref HEAD
-                                git checkout -- .
+                                git branch
+                                git reset --hard HEAD
+                                git clean -fd
+
                                 git checkout master
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
+                                git branch
+
                                 git fetch origin
                                 git merge origin/develop || (git merge --abort && exit 1)
+
                                 git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
 
                             '''  
