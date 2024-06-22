@@ -186,7 +186,8 @@ pipeline {
                                 git merge origin/develop || (git merge --abort && exit 1)
 
                                 git checkout origin/master -- Jenkinsfile
-                                git commit -m "Jenkinsfile excluded on merge"
+                                git add .
+                                git commit -m "pipeline commit"
 
                                 git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
 
