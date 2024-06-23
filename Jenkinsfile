@@ -203,7 +203,7 @@ pipeline {
                                 sh "git add Jenkinsfile"
                                 sh "git commit -m 'Merged develop into master, excluding Jenkinsfile'"
                             }
-                            else {}
+                            else {
                                 sh "echo 'Merge completed successfully.'"
                             }
                             
