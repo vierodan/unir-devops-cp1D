@@ -189,8 +189,9 @@ pipeline {
 
                                 git merge --no-ff --no-commit develop
                                 git reset HEAD Jenkinsfile
-                                git checkout -- Jenkinsfile
-                                git commit -m "develop merged to master"
+                                git checkout --ours Jenkinsfile
+                                git add .
+                                git commit -m "Jenkins pipeline has merged develop branch into master branch"
 
                                 git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
                             '''
