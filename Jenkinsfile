@@ -208,7 +208,7 @@ pipeline {
                             }
                             
 
-                            //Push merged to master
+                            //Push merge result to master
                             sh "git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master"
                         }
                     }
