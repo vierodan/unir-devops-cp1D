@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent{
+        label 'agent1'
+    }
 
     environment {
         AWS_REGION = 'us-east-1'
@@ -17,7 +19,7 @@ pipeline {
             parallel {
                  stage('Static code'){
                     agent{
-                        label 'agent1'
+                        label 'agent2'
                     }
                     steps{
                         unstash 'sourceCode'
@@ -54,7 +56,7 @@ pipeline {
                 }
                 stage('Security code'){
                     agent{
-                        label 'agent1'
+                        label 'agent2'
                     }
                     steps{
                         unstash 'sourceCode'
@@ -94,7 +96,12 @@ pipeline {
             }
         }
         stage('Deploy'){
+            agent{
+                label 'agent1'
+            }
             steps{
+                unstash 'sourceCode'
+
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh """
                         echo 'STAGE --> Deploy'
@@ -120,7 +127,12 @@ pipeline {
             }
         }
         stage('Extract stack outputs') {
+            agent{
+                label 'agent1'
+            }
             steps {
+                unstash 'sourceCode'
+
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh """
                         echo 'STAGE --> Extract stack outputs'
@@ -154,7 +166,7 @@ pipeline {
         }
         stage('Integration tests') {
             agent{
-                label 'agent2'
+                label 'agent3'
             }
             steps {
                 unstash 'sourceCode'
@@ -181,6 +193,9 @@ pipeline {
             }
         }
         stage('Promote merge to master') {
+            agent{
+                label 'agent1'
+            }
             when {
                 expression {
                     def result = currentBuild.result
@@ -193,6 +208,8 @@ pipeline {
                 }
             }
             steps {
+                unstash 'sourceCode'
+                
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
                         sh """
