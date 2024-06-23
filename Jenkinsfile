@@ -184,13 +184,10 @@ pipeline {
 
                                 git fetch origin develop
 
-                                git merge origin/develop || (git merge --abort && exit 1)
-
                                 git checkout HEAD -- Jenkinsfile
-                                git checkout --ours Jenkinsfile
-                                git add Jenkinsfile
+                                git merge origin/develop || (git merge --abort && exit 1)
                                 git commit -m "Merged develop into master, excluding Jenkinsfile" || echo "No changes to commit"
-                                
+
                                 git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
                             '''
                         }
