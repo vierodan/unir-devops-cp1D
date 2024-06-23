@@ -186,6 +186,7 @@ pipeline {
                                 git checkout HEAD -- Jenkinsfile
                                 git commit -m "Merged develop into master, excluding Jenkinsfile" || echo "No changes to commit"
                                 git checkout -- .
+                                git status
                                 git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
                             '''
                         }
