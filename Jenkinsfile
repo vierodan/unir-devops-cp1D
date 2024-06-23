@@ -177,24 +177,27 @@ pipeline {
                             sh "git config --global user.email 'vierodan@gmail.com'"
                             sh "git config --global user.name 'vierodan'"
 
-                            // Performing Git operations 
-                            sh '''
-                                git checkout -- .
+                            //Remove any change in the working directory
+                            sh "git checkout -- ."
 
-                                git checkout master
-                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  master
+                            //Chechout master and get latest version from origin
+                            sh "git checkout master"
+                            sh "git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  master"
 
-                                git checkout develop
-                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  develop
+                            //Chechout develep and get latest version from origin
+                            sh "git checkout develop"
+                            sh "git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  develop"
 
-                                git checkout master
+                            //Checkout master
+                            sh "git checkout master"
 
-                                git merge --no-ff --no-commit --log -X ours develop
-                                git add .
-                                git commit -m "Jenkins pipeline has merged develop branch into master branch"
+                            //Merge develop into master excluding Jenkinsfile automatically
+                            sh "git merge --no-ff --no-commit --log -X ours develop"
+                            sh "git add ."
+                            sh "git commit -m 'Jenkins pipeline has merged develop branch into master branch excluding Jenkinsfile'"
 
-                                git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
-                            '''
+                            //Push merged to master
+                            sh "git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master"
                         }
                     }
                 }
