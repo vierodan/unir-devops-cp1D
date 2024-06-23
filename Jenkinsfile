@@ -182,10 +182,10 @@ pipeline {
                                 git checkout -- .
 
                                 git checkout master
-                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  origin master
+                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  master
 
                                 git checkout develop
-                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  origin develop
+                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  develop
 
                                 git checkout master
 
