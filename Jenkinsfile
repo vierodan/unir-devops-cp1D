@@ -189,8 +189,7 @@ pipeline {
 
                                 git checkout master
 
-                                git merge --no-ff --no-commit develop
-                                git checkout --ours Jenkinsfile
+                                git merge --no-ff --no-commit --log -X ours develop
                                 git add .
                                 git commit -m "Jenkins pipeline has merged develop branch into master branch"
 
