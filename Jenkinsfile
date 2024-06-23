@@ -187,7 +187,7 @@ pipeline {
 
                                 if git ls-files -u | grep -q "Jenkinsfile"; then
                                     git checkout --ours Jenkinsfile
-                                    git add Jenkinsfile
+                                    git add .
                                     git commit -m "Merged develop into master, excluding Jenkinsfile"
                                 else
                                     git commit -m "Merged develop into master"
