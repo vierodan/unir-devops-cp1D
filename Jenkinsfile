@@ -193,8 +193,6 @@ pipeline {
 
                             //Merge develop into master excluding Jenkinsfile automatically
                             sh "git merge --no-ff --no-commit --log -X ours develop"
-                            sh "git add ."
-                            sh "git commit -m 'Jenkins pipeline has merged develop branch into master branch excluding Jenkinsfile'"
 
                             //Push merged to master
                             sh "git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master"
