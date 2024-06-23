@@ -191,8 +191,22 @@ pipeline {
                             //Checkout master
                             sh "git checkout master"
 
-                            //Merge develop into master excluding Jenkinsfile automatically
-                            sh "git merge --no-ff --no-commit --log -X ours develop"
+                            //Merge develop into master
+                            def mergeStatus = sh(script: "git merge develop", returnStatus: true)
+
+                            if (mergeStatus){
+                                sh "echo 'Error: Merge conflict or other error occurred during git merge.'"
+                                sh "git merge --abort"
+
+                                sh "git merge develop -X ours --no-commit"
+                                sh "git checkout --ours Jenkinsfile"
+                                sh "git add Jenkinsfile"
+                                sh "git commit -m 'Merged develop into master, excluding Jenkinsfile'"
+                            }
+                            else {}
+                                sh "echo 'Merge completed successfully.'"
+                            }
+                            
 
                             //Push merged to master
                             sh "git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master"
