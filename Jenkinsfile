@@ -179,6 +179,8 @@ pipeline {
 
                             // Performing Git operations 
                             sh '''
+                                git checkout -- .
+                                
                                 git checkout master
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
 
