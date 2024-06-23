@@ -194,11 +194,16 @@ pipeline {
                             //Merge develop into master
                             def mergeStatus = sh(script: "git merge develop", returnStatus: true)
 
+                            //In case of merge conflict or merge error
                             if (mergeStatus){
+                                //Log message for conflict or error
                                 sh "echo 'Error: Merge conflict or other error occurred during git merge.'"
+                                //Abort merge
                                 sh "git merge --abort"
 
+                                //Launch merge again keep files on master in case of conflict
                                 sh "git merge develop -X ours --no-commit"
+                                //Restore Jenkinsfile with the master version
                                 sh "git checkout --ours Jenkinsfile"
                                 sh "git add Jenkinsfile"
                                 sh "git commit -m 'Merged develop into master, excluding Jenkinsfile'"
