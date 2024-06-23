@@ -190,7 +190,6 @@ pipeline {
                                 git checkout master
 
                                 git merge --no-ff --no-commit develop
-                                git reset HEAD Jenkinsfile
                                 git checkout --ours Jenkinsfile
                                 git add .
                                 git commit -m "Jenkins pipeline has merged develop branch into master branch"
