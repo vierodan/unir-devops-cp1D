@@ -180,7 +180,7 @@ pipeline {
                             // Performing Git operations 
                             sh '''
                                 git checkout -- .
-                                
+
                                 git checkout master
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
 
@@ -192,6 +192,7 @@ pipeline {
                                     git add .
                                     git commit -m "Merged develop into master, excluding Jenkinsfile"
                                 else
+                                    git add .
                                     git commit -m "Merged develop into master"
                                 fi
 
