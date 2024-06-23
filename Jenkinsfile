@@ -189,7 +189,7 @@ pipeline {
 
                                 git checkout master
 
-                                git merge --no-ff develop
+                                git merge --no-ff --no-commit develop
                                 git reset HEAD Jenkinsfile
                                 git checkout --ours Jenkinsfile
                                 git add .
