@@ -179,15 +179,15 @@ pipeline {
 
                             // Performing Git operations 
                             sh '''
-                                git checkout -- .
+                                git checkout master
+                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  origin master
 
                                 git checkout develop
-                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git develop
+                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  origin develop
 
                                 git checkout master
-                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
 
-                                git merge --no-ff --no-commit develop
+                                git merge --no-ff develop
                                 git reset HEAD Jenkinsfile
                                 git checkout --ours Jenkinsfile
                                 git add .
