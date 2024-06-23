@@ -187,16 +187,10 @@ pipeline {
                                 git checkout master
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
 
-                                git merge develop || true
-
-                                if git ls-files -u | grep -q "Jenkinsfile"; then
-                                    git checkout --ours Jenkinsfile
-                                    git add .
-                                    git commit -m "Merged develop into master, excluding Jenkinsfile"
-                                else
-                                    git add .
-                                    git commit -m "Merged develop into master"
-                                fi
+                                git merge --no-ff --no-commit develop
+                                git reset HEAD Jenkinsfile
+                                git checkout -- Jenkinsfile
+                                git commit -m "develop merged to master"
 
                                 git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
                             '''
