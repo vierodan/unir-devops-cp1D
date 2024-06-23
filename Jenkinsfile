@@ -157,7 +157,7 @@ pipeline {
                     if (result == null || result == 'SUCCESS') {
                         return true
                     } else {
-                        echo 'Stage [Promote merge to master] skipped because Stage [Integration tests] fails'
+                        echo 'Stage [Promote merge to master] skipped because status of Pipeline is not SUCCESS'
                         return false
                     }
                 }
@@ -183,9 +183,9 @@ pipeline {
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
 
                                 git fetch origin develop
-
-                                git checkout HEAD -- Jenkinsfile
-                                git merge origin/develop || (git merge --abort && exit 1)
+                                git merge origin/develop
+                                git checkout --ours Jenkinsfile
+                                git add Jenkinsfile
                                 git commit -m "Merged develop into master, excluding Jenkinsfile" || echo "No changes to commit"
 
                                 git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
