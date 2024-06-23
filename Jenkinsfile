@@ -181,11 +181,13 @@ pipeline {
                             sh '''
                                 git checkout -- .
 
+                                git checkout develop
+                                git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git develop
+
                                 git checkout master
                                 git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master
 
-                                git fetch origin develop
-                                git merge origin/develop || true
+                                git merge develop || true
 
                                 if git ls-files -u | grep -q "Jenkinsfile"; then
                                     git checkout --ours Jenkinsfile
