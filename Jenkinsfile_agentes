@@ -1,8 +1,7 @@
 pipeline {
     agent{
-        label 'agent1'
+        label 'default'
     }
-
     environment {
         AWS_REGION = 'us-east-1'
         STAGE = 'staging'
@@ -95,9 +94,6 @@ pipeline {
             }
         }
         stage('Deploy'){
-            agent{
-                label 'default'
-            }
             steps{
                 unstash 'sourceCode'
 
@@ -126,9 +122,6 @@ pipeline {
             }
         }
         stage('Extract stack outputs') {
-            agent{
-                label 'default'
-            }
             steps {
                 unstash 'sourceCode'
 
@@ -200,9 +193,6 @@ pipeline {
             }
         }
         stage('Promote merge to master') {
-            agent{
-                label 'default'
-            }
             when {
                 expression {
                     def result = currentBuild.result
