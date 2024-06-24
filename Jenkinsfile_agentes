@@ -18,7 +18,7 @@ pipeline {
             parallel {
                  stage('Static code'){
                     agent{
-                        label 'agent2'
+                        label 'agent1'
                     }
                     steps{
                         unstash 'sourceCode'
@@ -55,7 +55,7 @@ pipeline {
                 }
                 stage('Security code'){
                     agent{
-                        label 'agent2'
+                        label 'agent1'
                     }
                     steps{
                         unstash 'sourceCode'
@@ -96,7 +96,7 @@ pipeline {
         }
         stage('Deploy'){
             agent{
-                label 'agent1'
+                label 'default'
             }
             steps{
                 unstash 'sourceCode'
@@ -127,7 +127,7 @@ pipeline {
         }
         stage('Extract stack outputs') {
             agent{
-                label 'agent1'
+                label 'default'
             }
             steps {
                 unstash 'sourceCode'
@@ -162,7 +162,7 @@ pipeline {
         }
         stage('Integration tests') {
             agent{
-                label 'agent3'
+                label 'agent2'
             }
             steps {
                 unstash 'sourceCode'
@@ -201,7 +201,7 @@ pipeline {
         }
         stage('Promote merge to master') {
             agent{
-                label 'agent1'
+                label 'default'
             }
             when {
                 expression {
