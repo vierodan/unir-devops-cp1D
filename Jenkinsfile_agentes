@@ -169,23 +169,25 @@ pipeline {
                 unstash 'result_url'
 
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                    sh """
-                        echo 'STAGE --> Integration tests'
-                        echo 'Host name:'; hostname
-                        echo 'User:'; whoami
-                        echo 'Workspace:'; pwd
-                    """
+                    script{
+                        sh """
+                            echo 'STAGE --> Integration tests'
+                            echo 'Host name:'; hostname
+                            echo 'User:'; whoami
+                            echo 'Workspace:'; pwd
+                        """
 
-                    //list temporal files created with url's for all endpoint
-                    sh "ls -l *.tmp"
+                        //list temporal files created with url's for all endpoint
+                        sh "ls -l *.tmp"
 
-                    //read temporal files and asing the value to environment variable
-                    def base_url = readFile('base_url_api.tmp').trim()
+                        //read temporal files and asing the value to environment variable
+                        def base_url = readFile('base_url_api.tmp').trim()
 
-                    sh """
-                        export BASE_URL=${base_url}
-                        pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
-                    """
+                        sh """
+                            export BASE_URL=${base_url}
+                            pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
+                        """
+                    }
                 }
             }
             post{
