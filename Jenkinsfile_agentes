@@ -1,6 +1,6 @@
 pipeline {
     agent{
-        label 'agent2'
+        label 'default'
     }
 
     environment {
@@ -9,8 +9,15 @@ pipeline {
     }
 
     stages {
+        stage('Stash files') {
+            steps {
+                stash includes: '**/*', name: 'sourceCode'
+            }
+        }
         stage('Deploy'){
             steps{
+                unstash 'sourceCode'
+
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh """
                         echo 'STAGE --> Deploy'
@@ -36,11 +43,9 @@ pipeline {
             }
         }
         stage('Extract stack outputs') {
-            //env variables for output endpoint from sam deploy command
-            environment {
-                ENDPOINT_BASE_URL_API = 'init'
-            }
             steps {
+                unstash 'sourceCode'
+
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh """
                         echo 'STAGE --> Extract stack outputs'
@@ -59,21 +64,24 @@ pipeline {
                         //execute extract_output.sh script for extract outputs url's from sam deploy command
                         sh "./get_base_url_api.sh ${env.STAGE} ${env.AWS_REGION}"
 
-                        //list temporal files created with url's for all endpoint
-                        sh "ls -l *.tmp"
-
-                        //read temporal files and asing the value to environment variable
-                        def base_url = readFile('base_url_api.tmp').trim()
-                        env.ENDPOINT_BASE_URL_API = "${base_url}"
-
-                        //clean temporal files
-                        sh "rm *.tmp"
+                        sleep(time: 2, unit: 'SECONDS')
                     }
+                }
+            }
+            post{
+                always{
+                    stash includes: 'base_url_api.tmp', name: 'result_url'
                 }
             }
         }
         stage('Integration tests') {
+            agent{
+                label 'agent2'
+            }
             steps {
+                unstash 'sourceCode'
+                unstash 'result_url'
+
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh """
                         echo 'STAGE --> Integration tests'
@@ -82,18 +90,33 @@ pipeline {
                         echo 'Workspace:'; pwd
                     """
 
+                    //list temporal files created with url's for all endpoint
+                    sh "ls -l *.tmp"
+
+                    //read temporal files and asing the value to environment variable
+                    def base_url = readFile('base_url_api.tmp').trim()
 
                     sh """
-                        export BASE_URL=${env.ENDPOINT_BASE_URL_API}
+                        export BASE_URL=${base_url}
                         pytest --junitxml=result-rest.xml test/integration/todoApiTest.py
                     """
+                }
+            }
+            post{
+                always{
+                    stash includes: 'result-rest.xml', name: 'results_rest'
+
+                    //clean temporal files
+                    sh "rm *.tmp"
                 }
             }
         }
     }
     post {
         always {
-             junit 'result*.xml'
+            unstash 'results_rest'
+            sleep(time: 2, unit: 'SECONDS')
+            junit 'result*.xml'
         }
         success {
             echo 'Pipeline completed successfully.'
