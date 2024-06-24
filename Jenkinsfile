@@ -205,7 +205,9 @@ pipeline {
                                 sh "git merge develop -X ours --no-commit"
                                 //Restore Jenkinsfile with the master version
                                 sh "git checkout --ours Jenkinsfile"
+                                sh "git checkout --ours Jenkinsfile_agentes"
                                 sh "git add Jenkinsfile"
+                                sh "git add Jenkinsfile_agentes"
                                 sh "git commit -m 'Merged develop into master, excluding Jenkinsfile'"
                             }
                             else {
