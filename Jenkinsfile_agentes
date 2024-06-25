@@ -211,6 +211,9 @@ pipeline {
 
                     //clean temporal files
                     sh "rm *.tmp"
+
+                    //clean sam configuration files
+                    sh "rm *.toml"
                 }
             }
         }
