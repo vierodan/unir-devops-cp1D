@@ -11,12 +11,18 @@ pipeline {
         stage('Download configuration and stash files') {
             steps {
                 withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
+                    sh """
+                        echo 'STAGE --> Download configuration and stash files'
+                        echo 'Host name:'; hostname
+                        echo 'User:'; whoami
+                        echo 'Workspace:'; pwd
+                    """
                     script {
                         // calculate url of configuration file
-                        def configFileUrl = 'https://raw.githubusercontent.com/vierodan/unir-devops-cp1D-config/${env.STAGE}/samconfig.toml'
+                        def configFileUrl = "https://raw.githubusercontent.com/vierodan/unir-devops-cp1D-config/${env.STAGE}/samconfig.toml"
                         
                         // config file name
-                        def configFileName = 'samconfig.toml'
+                        def configFileName = "samconfig.toml"
                         
                         // download the file using curl
                         sh "curl -u vierodan:\$PAT -o ${configFileName} ${configFileUrl}"
