@@ -210,10 +210,10 @@ pipeline {
                     stash includes: 'result-rest.xml', name: 'results_rest'
 
                     //clean temporal files
-                    sh "rm *.tmp"
+                    sh "rm -f *.tmp"
 
                     //clean sam configuration files
-                    sh "rm *.toml"
+                    sh "rm -f *.toml"
                 }
             }
         }
