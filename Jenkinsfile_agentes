@@ -8,9 +8,25 @@ pipeline {
     }
 
     stages {
-        stage('Stash files') {
+        stage('Download configuration and stash files') {
             steps {
-                stash includes: '**/*', name: 'sourceCode'
+                withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
+                    script {
+                        // calculate url of configuration file
+                        def configFileUrl = 'https://raw.githubusercontent.com/vierodan/unir-devops-cp1D-config/${env.STAGE}/samconfig.toml'
+                        
+                        // config file name
+                        def configFileName = 'samconfig.toml'
+                        
+                        // download the file using curl
+                        sh "curl -u vierodan:\$PAT -o ${configFileName} ${configFileUrl}"
+                    }
+                }
+            }
+            post{
+                always{
+                    stash includes: '**/*', name: 'sourceCode'
+                }
             }
         }
         stage('Static tests') {
