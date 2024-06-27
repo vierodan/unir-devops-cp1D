@@ -253,7 +253,6 @@ pipeline {
                             sh "git fetch origin"
 
                             //Checkout origin/master
-                            sh "git checkout -b master origin/master"
                             sh "git checkout origin/master"
 
 
