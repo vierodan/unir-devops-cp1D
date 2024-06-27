@@ -246,14 +246,12 @@ pipeline {
                             sh "git config --global user.email 'vierodan@gmail.com'"
                             sh "git config --global user.name 'vierodan'"
 
-                            // Fetch all branches from origin
-                            sh "git fetch origin --prune"
 
-                            // List all remote branches to debug and verify branch names
-                            sh "git branch -r"
+
 
                             // Checkout a new local branch that tracks origin/master
-                            sh "git checkout -b master origin/master"
+                            sh "git checkout master"
+                            sh "git pull"
 
 
                             //Merge develop into master
@@ -281,7 +279,7 @@ pipeline {
                             
 
                             //Push merge result to master
-                            sh "git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git origin/master"
+                            sh "git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master"
                         }
                     }
                 }
