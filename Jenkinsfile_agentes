@@ -20,6 +20,9 @@ pipeline {
                         echo 'User:'; whoami
                         echo 'Workspace:'; pwd
                     """
+                    
+                    //Clean workspace
+                    deleteDir()
 
                     // Checkout master branch
                     sh 'git checkout -b master origin/master'
