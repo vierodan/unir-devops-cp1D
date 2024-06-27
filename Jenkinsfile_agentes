@@ -11,20 +11,33 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Repository') {
-            steps{
-                // Checkout the repository
-                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                    // Fetch all branches from origin
-                    sh "git fetch origin --prune"
+        stage('Manual Checkout') {
+            steps {
+                script {
+                    sh """
+                        echo 'STAGE --> Manual Checkout'
+                        echo 'Host name:'; hostname
+                        echo 'User:'; whoami
+                        echo 'Workspace:'; pwd
+                    """
+
+                    // Git configurations
+                    sh "git config --global user.email 'vierodan@gmail.com'"
+                    sh "git config --global user.name 'vierodan'"
+
+                    // Initialize the repository and add the remote
+                    sh 'git init'
+                    sh 'git remote add origin https://github.com/vierodan/unir-devops-cp1D.git'
+                    sh 'git fetch origin --prune'
 
                     // List all remote branches to debug and verify branch names
-                    sh "git branch -r"
+                    sh 'git branch -r'
 
-                    // Checkout
-                    sh "git checkout develop"
-                    sh "git checkout master"
+                    // Checkout master branch
+                    sh 'git checkout -b master origin/master'
 
+                    // Fetch and checkout develop branch
+                    sh 'git fetch origin develop:develop'
                 }
             }
         }
@@ -262,12 +275,6 @@ pipeline {
                         """
 
                         script {
-                            // Setting Git configurations
-                            sh "git config --global user.email 'vierodan@gmail.com'"
-                            sh "git config --global user.name 'vierodan'"
-
-
-
 
                             // Checkout a new local branch that tracks origin/master
                             sh "git checkout master"
