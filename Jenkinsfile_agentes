@@ -12,18 +12,20 @@ pipeline {
 
     stages {
         stage('Checkout Repository') {
-            // Checkout the repository
-            catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                // Fetch all branches from origin
-                sh "git fetch origin --prune"
+            steps{
+                // Checkout the repository
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    // Fetch all branches from origin
+                    sh "git fetch origin --prune"
 
-                // List all remote branches to debug and verify branch names
-                sh "git branch -r"
+                    // List all remote branches to debug and verify branch names
+                    sh "git branch -r"
 
-                // Checkout
-                sh "git checkout develop"
-                sh "git checkout master"
+                    // Checkout
+                    sh "git checkout develop"
+                    sh "git checkout master"
 
+                }
             }
         }
         stage('Download configuration and stash files') {
