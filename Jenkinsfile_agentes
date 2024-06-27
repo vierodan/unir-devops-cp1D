@@ -2,7 +2,9 @@ pipeline {
     agent{
         label 'default'
     }
-
+    options {
+        skipDefaultCheckout true
+    }
     environment {
         AWS_REGION = 'us-east-1'
         STAGE = 'production'
