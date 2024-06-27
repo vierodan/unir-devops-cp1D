@@ -20,9 +20,21 @@ pipeline {
                         echo 'User:'; whoami
                         echo 'Workspace:'; pwd
                     """
-                    
+
                     //Clean workspace
                     deleteDir()
+
+                    // Git configurations
+                    sh "git config --global user.email 'vierodan@gmail.com'"
+                    sh "git config --global user.name 'vierodan'"
+
+                    // Initialize the repository and add the remote
+                    sh 'git init'
+                    sh 'git remote add origin https://github.com/vierodan/unir-devops-cp1D.git'
+                    sh 'git fetch origin --prune'
+
+                    // List all remote branches to debug and verify branch names
+                    sh 'git branch -r'
 
                     // Checkout master branch
                     sh 'git checkout -b master origin/master'
