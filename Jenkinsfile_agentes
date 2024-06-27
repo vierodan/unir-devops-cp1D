@@ -2,12 +2,30 @@ pipeline {
     agent{
         label 'default'
     }
+    options {
+        skipDefaultCheckout true
+    }
     environment {
         AWS_REGION = 'us-east-1'
         STAGE = 'staging'
     }
 
     stages {
+        stage('Checkout Repository') {
+            // Checkout the repository
+            catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                // Fetch all branches from origin
+                sh "git fetch origin --prune"
+
+                // List all remote branches to debug and verify branch names
+                sh "git branch -r"
+
+                // Checkout
+                sh "git checkout develop"
+                sh "git checkout master"
+
+            }
+        }
         stage('Download configuration and stash files') {
             steps {
                 withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
