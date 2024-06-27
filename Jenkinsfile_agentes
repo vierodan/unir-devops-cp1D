@@ -249,11 +249,11 @@ pipeline {
                             //Remove cache
                             sh "git rm -r --cached ."
 
-                            //Fetch all
-                            sh "git fetch --all"
+                            //Fetch origin
+                            sh "git fetch origin"
 
                             //Chechout master and pull
-                            sh "git checkout master"
+                            sh "git checkout -b master origin/master
                             sh "git pull"
 
                             //Chechout develep and pull
