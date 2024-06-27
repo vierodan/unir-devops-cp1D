@@ -246,14 +246,14 @@ pipeline {
                             sh "git config --global user.email 'vierodan@gmail.com'"
                             sh "git config --global user.name 'vierodan'"
 
-                            //Remove cache
-                            sh "git rm -r --cached ."
+                            // Fetch all branches from origin
+                            sh "git fetch origin --prune"
 
-                            //Fetch origin
-                            sh "git fetch origin"
+                            // List all remote branches to debug and verify branch names
+                            sh "git branch -r"
 
-                            //Checkout origin/master
-                            sh "git checkout origin/master"
+                            // Checkout a new local branch that tracks origin/master
+                            sh "git checkout -b master origin/master"
 
 
                             //Merge develop into master
