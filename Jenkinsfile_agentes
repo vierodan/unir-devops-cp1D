@@ -246,8 +246,7 @@ pipeline {
                             sh "git config --global user.email 'vierodan@gmail.com'"
                             sh "git config --global user.name 'vierodan'"
 
-                            // Stash untracked files
-                            sh 'git stash --include-untracked'
+
 
                             //Remove any change in the working directory
                             sh "git checkout -- ."
