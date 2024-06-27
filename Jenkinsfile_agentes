@@ -78,6 +78,10 @@ pipeline {
                         label 'agent1'
                     }
                     steps{
+
+                        //Clean workspace
+                        deleteDir()
+                        
                         unstash 'sourceCode'
 
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -115,6 +119,10 @@ pipeline {
                         label 'agent1'
                     }
                     steps{
+
+                        //Clean workspace
+                        deleteDir()
+
                         unstash 'sourceCode'
 
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
@@ -153,8 +161,6 @@ pipeline {
         }
         stage('Deploy'){
             steps{
-                unstash 'sourceCode'
-
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh """
                         echo 'STAGE --> Deploy'
@@ -181,8 +187,6 @@ pipeline {
         }
         stage('Extract stack outputs') {
             steps {
-                unstash 'sourceCode'
-
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     sh """
                         echo 'STAGE --> Extract stack outputs'
@@ -216,6 +220,10 @@ pipeline {
                 label 'agent2'
             }
             steps {
+
+                //Clean workspace
+                deleteDir()
+
                 unstash 'sourceCode'
                 unstash 'result_url'
 
@@ -266,8 +274,6 @@ pipeline {
                 }
             }
             steps {
-                unstash 'sourceCode'
-                
                 catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                     withCredentials([string(credentialsId: 'git_pat', variable: 'PAT')]) {
                         sh """
