@@ -252,6 +252,8 @@ pipeline {
                             //Remove any change in the working directory
                             sh "git checkout -- ."
 
+                            sh "git fetch --all"
+
                             //Chechout master and get latest version from origin
                             sh "git checkout master"
                             sh "git pull https://\$PAT@github.com/vierodan/unir-devops-cp1D.git  master"
