@@ -252,16 +252,10 @@ pipeline {
                             //Fetch origin
                             sh "git fetch origin"
 
-                            //Chechout master and pull
-                            sh "git checkout master"
-                            sh "git pull"
+                            //Checkout origin/master
+                            sh "git checkout -b master origin/master"
+                            sh "git checkout origin/master"
 
-                            //Chechout develep and pull
-                            sh "git checkout develop"
-                            sh "git pull"
-
-                            //Checkout master
-                            sh "git checkout master"
 
                             //Merge develop into master
                             def mergeStatus = sh(script: "git merge develop", returnStatus: true)
@@ -288,7 +282,7 @@ pipeline {
                             
 
                             //Push merge result to master
-                            sh "git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git master"
+                            sh "git push https://\$PAT@github.com/vierodan/unir-devops-cp1D.git origin/master"
                         }
                     }
                 }
