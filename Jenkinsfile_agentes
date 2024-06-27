@@ -249,9 +249,6 @@ pipeline {
                             //Remove cache
                             sh "git rm -r --cached ."
 
-                            //Remove any change in the working directory
-                            sh "git checkout -- ."
-
                             //Fetch all
                             sh "git fetch --all"
 
